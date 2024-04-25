@@ -59,7 +59,7 @@ replay-btn" aria-hidden="true"></i></a>
 
 
 <p>其中，man 手册解释 <code>wa</code> 表示 CPU 在等待 I&#x2F;O 操作（iowait）的时间百分比。</p>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240422133943165.png" alt="image-20240422133943165"></p>
+<p><img src="/.%5C%E8%81%8A%E8%81%8A-Linux-iowait%5Cimage-20240422133943165.png" alt="image-20240422133943165"></p>
 <p>上面输出显示：CPU 有 68% 的时间消耗在等待 I&#x2F;O 操作完成。按照也就是说有 68% 的 CPU 时间被浪费掉了？可是 Linux 会让 CPU 宝贵的性能白白浪费在耗时的 I&#x2F;O 等待上吗？CPU 在 iowait 状态的时候能执行其他任务吗？</p>
 <p>实际上当 CPU 处于 iowait 状态时，理论上也应该被视为处于 idle （空闲）状态，那 iowait 和 idle 之间有什么联系呢？</p>
 <p>今天我们就来解开这些疑惑，来看看 iowait 到底是什么。</p>
@@ -77,7 +77,7 @@ replay-btn" aria-hidden="true"></i></a>
 <li>Z：僵尸状态（<code>zombie</code>），表示进程已经终止（死透了），但父进程还没有发出 <code>wait4()</code> 系统调用去读取它的结束信息。（可以理解为进程死【终止】后 父进程要给它收尸【获取该进程的终止状态】）</li>
 <li>T：暂停状态（<code>stopped</code>），表示进程已经暂停（还没死透），是可以恢复的（比如我们给进程发送 SIGSTOP 或者按 CTRL+Z，就可以将进程置为暂停状态，可以通过 bg&#x2F;fg 命令，或者发送 SIGCONT 信号恢复。）</li>
 </ol>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240422132708823.png" alt="image-20240422132708823"></p>
+<p><img src="/.%5C%E8%81%8A%E8%81%8A-Linux-iowait%5Cimage-20240422132708823.png" alt="image-20240422132708823"></p>
 <p>CPU 一共有四种状态，在任一时刻，CPU 的状态都是四种中的一种。这四种状态是：user，sys，idle，iowait 。比如 <code>sar、top</code>会用百分比表示 CPU 分别处于这四种状态的时间，这四种状态相加的结果是 100%。</p>
 <p>上面提到的 4 种 CPU 状态，其实只有 2 种：</p>
 <ol>
@@ -94,7 +94,7 @@ replay-btn" aria-hidden="true"></i></a>
 <li>idle：系统中没有 R 状态的进程了</li>
 <li>iowait：系统中没有 R 状态的进程<strong>但有进程卡在 I&#x2F;O 上</strong></li>
 </ol>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240422134900499.png" alt="image-20240422134900499"></p>
+<p><img src="/.%5C%E8%81%8A%E8%81%8A-Linux-iowait%5Cimage-20240422134900499.png" alt="image-20240422134900499"></p>
 <p>这里可以看到：<strong>iowait 其实可以归类到 idle 状态，本质上表示 CPU 是空闲的，只不过 iowait 表示任务中有等待 I&#x2F;O 操作完成的时间。</strong></p>
 <p>那既然 iowait 也是一种 idle，CPU 在 iowait 状态的时候能执行其他任务吗？下面让我们来看一个例子。</p>
 <h2 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h2><p>本次例子在<strong>双核 CentOS 7</strong> 环境下实验。</p>
@@ -104,14 +104,14 @@ replay-btn" aria-hidden="true"></i></a>
 
 
 <p>此时通过 <code>top</code> 命令查看 CPU 使用率，能够发现 CPU0 的 wa 项接近 100，这说明 CPU0 几乎所有的时间都花在等待 I&#x2F;O 操作完成上。</p>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240422140831534.png" alt="image-20240422140831534"></p>
+<p><img src="/.%5C%E8%81%8A%E8%81%8A-Linux-iowait%5Cimage-20240422140831534.png" alt="image-20240422140831534"></p>
 <p>那么，是不是此时 CPU 就没有精力处理其他任务了呢？我们再输入下面这条命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset 1 sh -c <span class="string">&quot;while true; do true; done&quot;</span></span><br></pre></td></tr></table></figure>
 
 
 
 <p>这条命令是在相同的 CPU 上执行一个死循环，用于模拟计算密集型任务。</p>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240422142013795.png" alt="image-20240422142013795"></p>
+<p><img src="/.%5C%E8%81%8A%E8%81%8A-Linux-iowait%5Cimage-20240422142013795.png" alt="image-20240422142013795"></p>
 <p>可以看到：CPU0 的 <code>wa</code> 降低为 0 了，与此同时 <code>us</code> 和 <code>sy</code> 的时间占比接近 100% 。CPU 在 iowait 状态的时候能执行了其他任务。</p>
 <p>但这就说明 <code>dd</code> 命令产生的进程没有阻塞在 I&#x2F;O 上吗？并不是。</p>
 <blockquote>
