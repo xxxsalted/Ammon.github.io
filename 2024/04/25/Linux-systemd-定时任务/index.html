@@ -1,0 +1,189 @@
+
+
+  <!DOCTYPE html>
+  <html lang="zh-CN">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="description" content=my_blog >
+  <meta name="keywords" content=404notfound >
+
+  <head>
+    <title>
+      Linux systemd 定时任务 [ 咸鱼运维杂谈 ]
+    </title>
+  <link rel="alternate" href="/atom.xml" title="咸鱼运维杂谈" type="application/atom+xml">
+</head>
+
+  <body>
+
+    <link rel="stylesheet" href="/css/header.css">
+<div class="header">
+  <div class="logo">
+    <span class="pull-left">
+      <a id="site-name" href="/">
+        咸鱼运维杂谈
+      </a>
+    </span>
+  </div>
+  <ul class="nav-list">
+  </ul>
+</div>
+
+      <!--<link rel="stylesheet" href="/css/top-header.css">
+<div id="top-bar" class="fixed">
+
+  <a class="goto-top" href="#"></a>
+  <ul class="bar-list bar-list-1">
+  </ul>
+</div>-->
+
+        <div id="content-outer">
+          <div class="content-inner">
+            <link rel="stylesheet" href="/css/post.css">
+<div class="posts">
+  <a href="/index.html"><i class="fa fa-home
+replay-btn" aria-hidden="true"></i></a>
+  <div class="post-title">
+    <p>
+      Linux systemd 定时任务
+    </p>
+    <hr>
+  </div>
+  <div class="post-content">
+    <p>哈喽大家好，我是咸鱼。</p>
+<p>说到 Linux 定时任务，大家用得最多的就是 crond 服务，但其实 systemd 也有类似的功能。我们不但可以通过 systemd 来管理服务，还能设置定时任务，那就是 systemd timer。</p>
+<p>与 crond 相比，systemd 定时任务具有以下优点：</p>
+<ul>
+<li>更高的精度：systemd 定时任务可以精确到秒，而 crond 只能精确到分钟。</li>
+<li>可以限制资源使用：使用 systemd 定时任务可以设置内存和 CPU 的使用限制，比如最多使用 50% 的 CPU。</li>
+<li>更灵活的配置：systemd 定时任务可以通过条件、依赖关系等进行配置，以控制任务的执行。相比之下，crond 的配置相对简单，灵活性较低。</li>
+</ul>
+<p>举个例子，假设我们要通过 crond 配置多个大文件的远程备份（使用 scp、rsync 或 ftp 的方式），但由于大文件的网络传输时间不确定，因此下一个文件的备份任务开始时间几乎都是按照经验估计的。</p>
+<p>这可能导致上一个任务的网络传输尚未完成，下一个任务已经开始，同时占用网络带宽，然后又启动了下一个任务，形成恶性循环。</p>
+<p>而使用 systemd timer 可以建立任务之间的依赖关系，例如在第一个备份任务完成后再启动第二个备份任务，以此类推。</p>
+<h2 id="systemd-timer-原理"><a href="#systemd-timer-原理" class="headerlink" title="systemd timer 原理"></a>systemd timer 原理</h2><p>systemd 定时任务基于 systemd 的单元管理器。它使用两种类型的单元来管理定时任务：<code>.timer</code> 单元和 <code>.service</code> 单元。</p>
+<ul>
+<li><code>.timer</code> 单元：<ul>
+<li><code>.timer</code> 单元定义了定时规则，包括启动时间、间隔时间等。</li>
+<li>每个 <code>.timer</code> 单元都对应一个或多个关联的 <code>.service</code> 单元。</li>
+</ul>
+</li>
+<li><code>.service</code> 单元：<ul>
+<li><code>.service</code> 单元定义了要在计时器触发时运行的服务或命令。</li>
+<li>当 <code>.timer</code> 触发时，相关联的 <code>.service</code> 单元将被启动。</li>
+</ul>
+</li>
+</ul>
+<p>systemd 定时任务原理是：<strong>systemd 定期检查每个 <code>.timer</code> 单元中定义的定时规则，以确定是否触发相应的定时器。一旦定时器触发，systemd 将启动与该定时器关联的 <code>.service</code> 单元，从而执行预定的任务。</strong></p>
+<p>在正式介绍 systemd 定时任务之前，我们先要了解什么是单元（unit）</p>
+<h2 id="systemd-单元"><a href="#systemd-单元" class="headerlink" title="systemd 单元"></a>systemd 单元</h2><p>简单来讲，单元就是 systemd 的最小管理单位，是单个进程的描述。一个个单元相互调用和依赖，组成一个庞大的任务管理系统。</p>
+<p>systemd 中的 unit 有很多类型，下面是一些常见的 unit 类型：</p>
+<ul>
+<li><code>.service</code>：service 单元，也就是我们常说的系统服务</li>
+<li><code>.target</code>：target 单元，其实就是一堆 unit 的集合，比如常见的 <code>multi-user.target</code></li>
+<li><code>.timer</code>：timer 单元，负责定时任务。</li>
+<li><code>.slice</code>：slice 单元，负责资源的分配。</li>
+</ul>
+<p>每个 unit 都有一个描述文件（unit 负责干什么、怎么干…），它们分散在三个目录。</p>
+<ul>
+<li><code>/lib/systemd/system</code>：系统默认的 unit 文件</li>
+<li><code>/etc/systemd/system</code>：包含用户自定义的 unit 文件，如果设置了开机自启动，则该目录下的 unit 描述文件会创建一个符号链接。</li>
+<li><code>/usr/lib/systemd/system</code>：用户自己定义的 unit 文件，也会包含一些系统默认的 unit 文件</li>
+</ul>
+<blockquote>
+<p>大多数 linux 发行版中 <code>/lib</code> 是  <code>/usr/lib</code>的软链接，所以 1 和 3 其实是同一目录，作用自然应该是相同的。</p>
+</blockquote>
+<p>其实可以简单分成两类：</p>
+<ul>
+<li><code>/etc/systemd/system</code>：用户自定义的 unit 文件</li>
+<li><code>/usr/lib/systemd/system</code>：系统默认的 unit 文件和用户安装软件的 unit 文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有 unit</span></span><br><span class="line">$ systemctl list-unit-files</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有 Service unit</span></span><br><span class="line">$ systemctl list-unit-files --<span class="built_in">type</span> service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有 Timer unit</span></span><br><span class="line">$ systemctl list-unit-files --<span class="built_in">type</span> timer</span><br></pre></td></tr></table></figure>
+
+
+
+<p>关于 systemd unit 相关的内容这里就不细讲了，大家可以看我之前的文章：《<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNzI1MzE2Mw==&mid=2247485486&idx=1&sn=fafbbf884603e63308d085d99e5f77e0&chksm=c293086af5e4817cf3c4cea6136cbbbf7689a6b91e32f17259d5f1b23e067fd15ea382891401&token=1980629016&lang=zh_CN#rd">systemctl 命令设置开机自启动失败 </a>》</p>
+<p><img src="/.io//image-20240415094008436.png" alt="image-20240415094008436"></p>
+<h2 id="设置-systemd-定时任务"><a href="#设置-systemd-定时任务" class="headerlink" title="设置 systemd 定时任务"></a>设置 systemd 定时任务</h2><p>有一个检查 https 证书是否过期的脚本 <code>check_https.sh</code>，我们现在需要系统定期执行这个脚本，除此之外，系统在开机之后也会执行这个脚本。</p>
+<p><strong>首先创建一个 service unit</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /usr/lib/systemd/system/check-https.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=check https certificates</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=check_https.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>Type=oneshot</code> 表示 service 以一次性（Oneshot）方式运行。这意味着当启动 service 时，它将执行一次，并在完成后退出。</p>
+<p><strong>然后我们创建一个 timer unit</strong></p>
+<p>Service unit 只是定义了如何执行任务，要定时执行这个 Service，还必须定义 Timer unit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /usr/lib/systemd/system/check-https.timer</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Runs check https every day</span><br><span class="line"></span><br><span class="line">[Timer]</span><br><span class="line">OnUnitActiveSec=24h</span><br><span class="line">Unit=check-https.service</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们着重来看下 [Timer] 部分：</p>
+<ul>
+<li><code>OnActiveSec</code>：定时任务生效后，多少时间开始执行任务</li>
+<li><code>OnBootSec</code>：系统启动后，多少时间开始执行任务</li>
+<li><code>OnStartupSec</code>：Systemd 进程启动后，多少时间开始执行任务</li>
+<li><code>OnUnitActiveSec</code>：该 unit 上次执行后，等多少时间再次执行</li>
+<li><code>OnUnitInactiveSec</code>： 定时任务上次关闭后多少时间，再次执行</li>
+<li><code>OnCalendar</code>：基于绝对时间，而不是相对时间执行</li>
+<li><code>AccuracySec</code>：如果因为各种原因，任务必须推迟执行，推迟的最大秒数，默认是60秒</li>
+<li><code>Unit</code>：真正要执行的任务，默认是同名的带有<code>.service</code> 后缀的 unit</li>
+<li><code>Persistent</code>：如果设置了该字段，即使定时任务到时没有启动，也会自动执行相应的 unit</li>
+<li><code>WakeSystem</code>：如果系统休眠，是否自动唤醒系统</li>
+</ul>
+<p>上面的 timer 文件里，<code>OnUnitActiveSec=24h</code> 表示 24 小时执行一次任务。</p>
+<p>下面是其他的写法：</p>
+<p>1、在系统启动 15 分钟后执行，并在系统运行时，每周执行一次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Timer]</span><br><span class="line">OnBootSec=15min</span><br><span class="line">OnUnitActiveSec=1w</span><br><span class="line">Unit=check-https.service</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、每周周一执行，如果到时定时任务没有启动，会立即执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Timer]</span><br><span class="line">OnCalendar=weekly</span><br><span class="line">Persistent=<span class="literal">true</span></span><br><span class="line">Unit=check-https.service</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、每周日凌晨三点执行（时间格式：<code>Year-Month-Day Hour:Minute:Second</code>）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Timer]</span><br><span class="line">OnCalendar=Sun *-*-* 03:00:00</span><br><span class="line">Unit=check-https.service</span><br></pre></td></tr></table></figure>
+
+
+
+<p>官方文档：<a target="_blank" rel="noopener" href="https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html</a></p>
+<p>然后我们启动这个定时任务，并设置开机自启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重新加载配置</span></span><br><span class="line">systemctl  daemon-reload</span><br><span class="line"></span><br><span class="line">systemctl start check-https.timer</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> check-https.timer</span><br></pre></td></tr></table></figure>
+
+
+
+<p>其他一些定时任务命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有正在运行的定时任务</span></span><br><span class="line">systemctl list-timers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭定时任务</span></span><br><span class="line">systemctl stop check-https.timer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看定时任务状态</span></span><br><span class="line">systemctl status check-https.timer</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+  
+</div>
+          </div>
+        </div>
+
+        <link rel="stylesheet" href="/css/footer.css">
+<div class="bottom-outer">
+  <div class="copyright">©2021 - 2021 By Tanger</div>
+  <div class="framework-info">
+    <span>Power by</span>
+    <a class="a1" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+    <span class="footer-separator">|</span>
+    <span>Theme by</span>
+    <a class="a2" target="_blank" rel="noopener" href="https://github.com/redhat123456/hexo-theme-MiHoYo">MiHoYo</a>
+  </div>
+</div>
+
+          
+            <!-- scripts list from theme config.yml -->
+            
+              <script src="/js/MiHoYo.js"></script>
+              
+                
+
+  </body>
+
+  </html>
