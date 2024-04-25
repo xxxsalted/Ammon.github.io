@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ammon&#39;s blog</title>
+  
+  
+  <link href="https://xxxsalted.github.io/feed/atom.xml" rel="self"/>
+  
+  <link href="https://xxxsalted.github.io/"/>
+  <updated>2024-04-24T07:47:03.941Z</updated>
+  <id>https://xxxsalted.github.io/</id>
+  
+  <author>
+    <name>Ammon</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://xxxsalted.github.io/2024/04/24/hello-world/"/>
+    <id>https://xxxsalted.github.io/2024/04/24/hello-world/</id>
+    <published>2024-04-24T07:47:03.940Z</published>
+    <updated>2024-04-24T07:47:03.941Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
