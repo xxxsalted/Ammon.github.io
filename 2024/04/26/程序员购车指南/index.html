@@ -1,0 +1,589 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>程序员购车指南 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/" class="tag"># 程序人生</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">程序员购车指南</h1>
+          <div class="post-meta">
+            <time>4月 26, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><h1 id="程序员购车指南"><a href="#程序员购车指南" class="headerlink" title="程序员购车指南"></a>程序员购车指南</h1><p>哈喽大家好，我是咸鱼。</p>
+<p>爱车可以说是大部分男人的天性，而我对汽车的热情却远不及对手表的钟爱（痴迷劳力士）。以至于我的朋友掏出车钥匙指着上面的苹果树标志跟我介绍奔驰 AMG 系列的强劲性能和马力时，我只能尽量假装自己听懂不让他尴尬。</p>
+<p>不过从今年开始，大数据就时不时给我推一些关于汽车的介绍和评测视频，加上打算给老爸买辆车。为了不被 4S 店忽悠，我逐渐开始了解一些选车和购车的基本知识。</p>
+<p>在搜集了许多资料之后，我写出了这份程序员购车指南，希望对大家有所帮助。</p>
+<h2 id="购车前"><a href="#购车前" class="headerlink" title="购车前"></a>购车前</h2><p>我们在选车的时候，除了考虑价格因素外，最重要的就是要关注车辆的配置参数。比如说油耗、轴距、车辆尺寸、发动机功率等等，那么我们就来看下选车时常见的一些参考参数。</p>
+<h3 id="基本参数"><a href="#基本参数" class="headerlink" title="基本参数"></a>基本参数</h3><p><strong>油耗</strong></p>
+<p>首先就是大家最关心的油耗，我们在听到别人评论一辆车的油耗时，都会说”几个油“，意思是这辆车行驶了一百公里消耗了多少升油，也就是【百公里油耗】。</p>
+<p>如果说一辆车百公里 9 个油，意思就是这辆车行驶了 100km，用掉了 9 升油，由此也可以推出每公里花费多少钱。</p>
+<p>假设当前油价为 7元&#x2F;升，百公里 9 个油，那么每公里油钱为 0.63 元</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7 * 9 / 100 = 0.63（元）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在不同的行驶环境下。油耗也会有不同，比如高速路和市区，油耗就会有较为明显的差别。</p>
+<p><strong>车辆尺寸（单位：mm）</strong></p>
+<p>车辆的长、宽、高是一部车的基本外形尺寸，其中：</p>
+<ul>
+<li>车身长度是指汽车长度方向两个极端点间的距离，即从前保险杠最凸出的位置到后保险杠最凸出的位置的距离。</li>
+<li>车身宽度是指汽车宽度方向两个极端点间的距离，但是这里不包括外后视镜、转向灯、挡泥板以及轮胎与地面接触变形的部分。</li>
+<li>车身高度是指从地面到汽车最高点的距离，这个最高点包含车顶行李架，但是不包括天线</li>
+</ul>
+<p>一般来讲，车辆尺寸越大表示内部空间越大，舒适性越高</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240413095251545.png" class="" title="image-20240413095251545">
+
+
+
+<p><strong>轴距（单位：mm）</strong></p>
+<p>轴距，就是通过车辆同一侧相邻两车轮的中点，并垂直于车辆纵向对称平面的二垂线之间的距离。简单地说，<strong>就是汽车前轴中心到后轴中心的距离</strong>。</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240412134706009.png" class="" title="image-20240412134706009">
+
+
+
+<p>轴距的长短直接影响汽车的长度，进而影响车的内部使用空间。在车长确定的情况下，轴距是影响乘坐空间最重要的因素。长轴距使乘员的纵向空间增大，将大大增加影响车辆乘坐舒适性的脚部空间。</p>
+<p>不但如此，轴距越长，车辆的抗俯仰和横摆性能越好，但是会导致车辆机动性下降。</p>
+<p><strong>等级划分</strong></p>
+<p>汽车等级的由来可以追溯到汽车行业内部的定位和市场竞争需求。随着汽车行业的发展和不断壮大，车型的种类和数量也逐渐增多，为了更好地满足消费者的需求，厂商开始对不同类型的汽车进行分类和定位。</p>
+<ul>
+<li>北美等级划分标准</li>
+</ul>
+<p>北美地区将车辆划分成以下几类：</p>
+<ol>
+<li>经济型轿车</li>
+<li>次紧凑型车</li>
+<li>紧凑型轿车</li>
+<li>中型轿车</li>
+<li>大型轿车</li>
+<li>豪华轿车</li>
+<li>加长轿车</li>
+<li>敞篷车</li>
+</ol>
+<ul>
+<li>欧洲等级划分标准</li>
+</ul>
+<p>欧洲地区分级采用的是大众汽车的分级方法。大众汽车通过车型平台的大小进行定位划分，分为 A00 级、A0 级、A 级、B 级、C 级和 D 级六个级别。这并非严格意义上的权威通用标准，而是大众品牌内部制定的一套分级方法，后来在德国和欧洲其他地区广泛应用，逐渐成为了欧洲汽车分级的标准</p>
+<p>由于德国大众最先进入到国内与上海汽车厂合资成立上海大众汽车公司，因此我国一般使用大众汽车分级标准进行划分。汽车等级一般是<strong>根据汽车外部的尺寸、内部空间、轴距、排量等参数来进行划分的，其中最主要的判断标准就是轴距。</strong></p>
+<p>汽车分级标准（以轴距为主要判断依据）：</p>
+<ul>
+<li>A00 级：轴距范围在 2 米至 2.3 米之间，发动机排量小于 1 升，例如奥拓。</li>
+<li>A0 级：轴距范围在 2.3 米至 2.5 米之间，排量在 1 升至 1.5 升，例如飞度。</li>
+<li>A 级：轴距范围在 2.5 米至 2.7 米之间，排量在 1.5 升至 2.0 升，例如卡罗拉。</li>
+<li>B 级：轴距范围在 2.7 米至 2.9 米之间，排量在 1.8 升至 2.5 升，例如奥迪 A4、帕萨特。</li>
+<li>C 级：轴距范围在 2.8 米至 3.0 米之间，排量在 2.3 升至 3.0 升，例如奥迪 A6。</li>
+<li>D 级：轴距 3.0 米以上，排量 3.0 升以上，例如劳斯莱斯、宾利。</li>
+</ul>
+<p>汽车分级标准（以车长为主要判断依据）：</p>
+<ul>
+<li>A00 级：3.7 M 以内。</li>
+<li>A0 级：3.7-4.3 M 之间。</li>
+<li>A 级：4.3-4.6 M 之间。</li>
+<li>B 级：4.6-4.9 M 之间。</li>
+<li>C 级：4.9-5.1 M 之间。</li>
+<li>D 级：5.1 M 以上。</li>
+</ul>
+<h3 id="发动机参数"><a href="#发动机参数" class="headerlink" title="发动机参数"></a>发动机参数</h3><p>众所周知，发动机是一辆油车的心脏，是油车的动力源泉。发动机的动力则来源于气缸内部，气缸就是一个把燃料的内能转化为动能的场所。</p>
+<p>简单点来讲，燃料在气缸内燃烧产生的压力推动活塞上下运动，这些运动通过连杆传递给曲轴，最终将线性运动转化为旋转运动，然后，通过变速器和传动轴，将动力传递到驱动车轮上，从而推动汽车前进。</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240413100747090.png" class="" title="1990年保时捷3512一级方程式发动机">
+
+
+
+<p><strong>发动机排量（单位：mL）</strong></p>
+<p>其中活塞上下运动过程中所通过的空间容积就叫做<strong>排量</strong>，又因为发动机都有多个气缸，所以发动机的排量就是所有气缸排量之和。</p>
+<p>而根据气缸的排量方式和数量，产生出了不同的类型的发动机，例如直列发动机、V 型发动机、W 型发动机等等</p>
+<p>比如说 V8 发动机就是 8 个气缸采用 V 型排列的发动机</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240413134802502.png" class="" title="4.0 排量涡轮增压 V8 发动机">
+
+
+
+
+
+<p><strong>工作方式</strong></p>
+<p>现在的发动机可分为自然吸气式（简称 L）和增压式（简称 T），其中增压式又可分为涡轮增压、机械增压、双增压。</p>
+<p>现在市面上大部分车一般都是自吸式或者涡轮增压式，这里简单介绍下这两种。</p>
+<ul>
+<li>自然吸气</li>
+</ul>
+<p>在不通过任何增压器的情况下，让大气压将空气压入燃烧室的一种形式。</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240413110734828.png" class="" title="亚洲龙自吸发动机">
+
+
+
+<p>以四缸发动机为例，一个活塞完成一次工作循环需要经历四个阶段：</p>
+<ol>
+<li>进气行程：此时进气门打开，气缸内产生压力差，导致空气和燃油混合物被吸入气缸。</li>
+<li>压缩行程：进气门关闭，混合气被压缩，活塞上升至最高点并点火。</li>
+<li>燃烧行程：混合气燃烧产生膨胀，推动活塞向下运动，输出动力。</li>
+<li>排气行程：此时排气门打开，废气被排出气缸。</li>
+</ol>
+<p>自然吸气是指在进气行程中，混合气利用气压差自然被吸入气缸；而增压系统则是通过增压器将空气压缩，提高气体压力和密度，使得在气门打开时气体自身的高压以及气压差的作用下增加进气量，从而提高发动机的功率。</p>
+<p>优点：自然吸气发动机在动力输出上的平顺性与响应的直接性上，要远优于增压发动机</p>
+<ul>
+<li>涡轮增压</li>
+</ul>
+<p>涡轮增压发动机是指配备了涡轮增压器的发动机。涡轮增压器实质上是一种空气压缩设备，利用发动机排放的废气能量，通过冲击安装在排气系统中的涡轮，使其高速旋转，进而将增压后的空气压力强制送入气缸中。</p>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240413110531888.png" class="" title="奥迪 RS6 双涡轮增压 V8 发动机">
+
+
+
+<p>由于发动机功率与进气量成正比，因此采用涡轮增压发动机的汽车动力都比较足；而且整个增压过程基本不会消耗发动机本身的动力，因为它利用的是发动机排出的废气。</p>
+<p>优点：动力足、省油、结构简单，安装方便，技术适应性广。</p>
+<p><strong>最大功率（单位：kW）&#x2F; 最大扭矩（单位：N·m）</strong></p>
+<p>最大功率是指一台发动机所能实现的最大动力输出，随着发动机转速的增加，功率也会相应提高。</p>
+<p>一旦达到一定转速，功率就不再增加，因此标注最大功率时通常会同时标明相应的发动机转速。</p>
+<p>通常，我们在谈论汽车功率时会使用另一个单位：马力（PS），例如我们会说某辆车有多少匹马力。</p>
+<p>功率和马力的换算关系是：1 kW&#x3D;1.36 PS。</p>
+<p><strong>简单来说，最大功率影响车辆能达到的最高速度。</strong></p>
+<p>而扭矩则是指发动机在运转时从曲轴端输出的平均力矩。扭矩越大，发动机输出的“劲”越大，曲轴转速的变化也越快，汽车的爬坡能力、起步速度和加速性也越好。</p>
+<p>然而，扭矩随着发动机转速的变化而不同。在某个转速区间内才会产生最大扭矩，这个区间通常在标注最大扭矩时给出。</p>
+<p>举例来说，有些发动机可能在较低转速时就达到或接近最大扭矩，因此起步加速感觉特别强劲，且相对省油；而其他一些发动机则只能在转速较高的情况下达到最大扭矩，只能在超车时感受到加速的快感。</p>
+<p><strong>简单来讲，最大扭矩影响车辆的加速性能。</strong></p>
+<h2 id="购车时"><a href="#购车时" class="headerlink" title="购车时"></a>购车时</h2><p>在彻底了解心仪车型的配置参数和价格之后，我们就可以前往 4S 店进行试驾了。试驾是了解目标车辆的感受和体验的重要环节，绝对不要因为觉得不好意思而犹豫。</p>
+<p>特别是对于家庭用车，最好带上家人一同前往试驾，让他们亲自感受一下后排空间是否足够舒适。</p>
+<p>试驾后觉得不错的，让销售给你出一份报价单，千万别急着订车，一定要多跑几家店，充分了解一下车子的大概优惠行情。</p>
+<p>试驾并了解优惠行情之后，我们就到了买车阶段，不知道大家有没有听过这个故事：买车如果是全款购买，销售全程黑脸，但如果是贷款买车，销售对你毕恭毕敬笑脸相迎，甚至提车仪式都给你搞得非常隆重。</p>
+<p>为何同样是购车，销售的态度会有如此大的差别？这就需要介绍一下全款购车和贷款购车的区别了。</p>
+<h3 id="全款买车"><a href="#全款买车" class="headerlink" title="全款买车"></a>全款买车</h3><p>全款买车只有下面四个费用：</p>
+<ul>
+<li>裸车价</li>
+</ul>
+<p>裸车价到底该怎么算？就是<strong>指导价减去现金优惠</strong>。一定是现金优惠，不是什么综合优惠。</p>
+<p>裸车价尽量往少了谈，这关系到我们交的购置税。</p>
+<ul>
+<li>购置税</li>
+</ul>
+<p>购置税该怎么算？就是<strong>裸车价 ÷ 11.13</strong>。</p>
+<p>注意一定是裸车价 ÷ 11.3，千万不能用指导价 ÷ 11.3。</p>
+<ul>
+<li>保险</li>
+</ul>
+<p>车辆保险只有四项：交强险、车损险、第三责任险和医保外责任用药险。</p>
+<ul>
+<li>上牌费</li>
+</ul>
+<p>4S 店帮你去上牌的费用。车管所的工本费一般是 120 块钱，如果 4S 店收你一两千上牌费的，纯属耍流氓，撑死给它 500 块，多一分都没有（记得让它给你个好看的牌照框）。</p>
+<p>如果价格实在谈不下来，可以选择自己去车管所上牌，就是比较麻烦。</p>
+<h3 id="贷款买车"><a href="#贷款买车" class="headerlink" title="贷款买车"></a>贷款买车</h3><p>一般分为厂家金融贷款和银行分期贷款。</p>
+<ul>
+<li>厂商金融贷款</li>
+</ul>
+<p>有些汽车厂商都会有免息贷款或者贴息贷款的政策（上汽金融、一汽金融等），都是面对自家车提供贷款，主要目的不是为了挣钱，而是以此来提高销量。</p>
+<p>4S 销售顾问也会在电话里头跟你说我们店里现在有贴息甚至免息贷款的政策，实际上一旦你到店里了，销售就会说你资质不够走不了贷款，你只能做银行的分期贷款了。</p>
+<p>因为厂商金融贷款的话 4S 店是赚不了钱的（没利息甚至贴息），所以先把你忽悠到店里，然后再给你推银行分期贷款。</p>
+<ul>
+<li>银行分期贷款</li>
+</ul>
+<p>对于银行分期贷款，可以说是 4S 店最大的收入来源了（银行会把一部分贷款利息返给 4S 店）。</p>
+<p>现在最常见的就是 5 年分期的贷款，4S 店销售会跟你说 5 年分期贷款买车要比全款买车优惠，月供低、利率低，2 年后可以提前还，不收你违约金。乍一听感觉很划算，事实果真如此吗？</p>
+<p>优惠是挺优惠的，但你能保证两年后一定能够存够钱提前还款吗？不会因为一些其他原因把钱花掉了？</p>
+<p>银行和 4S 店就是抓住只有极少数消费者能够提前还款的事实，前期看似你赚了，实则是银行和 4S 店赚了。</p>
+<p>因为大数据显示两年后能提前还款的人不到 40%，外面的消费诱惑大大了，极少有人能够按时提前还款，本以为自己 5 年分期贷款买车 2 年后提前还款能省下几万块钱，结果只能老老实实贷满 5 年还了 5 年的利息。</p>
+<p>如果我们真的要通过银行分期贷款买车，首先最重要的就是自己要会<strong>算利息，确认好贷款利率</strong></p>
+<p>假设我们贷款十万，5 年也就是分 60 期还，那月供就是 2500。那总还款就是 15 万 （2500 X 60 期 &#x3D; 150000）。</p>
+<p>总利息就是 5 万（15万 - 10 万），月利息就是 833.33（5万 ÷ 60），月利率就是 0.83%（5万 ÷ 60 期 ÷ 10万），年利率接近 10%（0.83% X 12个月）。</p>
+<p>可以看到这个利率是非常的高，最好贷款利率不要超过 4%，越低越好。</p>
+<p>学会了算利息之后，我们还要知道<strong>还款的方式 ，一般分为等额本息和等额本金</strong></p>
+<p><strong>等额本息：</strong>贷款总额和贷款利息之和分摊到每个还款月中，每月以相同的金额偿还贷款本息（即每月的总还款额一致，其中利息占比逐月递减，本金占比逐月增加），俗称先息后本。</p>
+<p><strong>等额本金：</strong>每月偿还相同金额的本金，由于剩余本金减少，而利息则随计息本金的减少而逐月递减，所以每月还款额逐月递减，俗称等本等息。</p>
+<p><strong>如果你有提前还款的打算，可以选择等额本金；如果是等额本息，就没必要提前还款了，因为等额本息前几年还的钱大部分是利息，后几年还的才是本金。</strong></p>
+<p>最后一点就是我们要跟 4S 店谈清楚提前还款要不要交违约金，这个看你自己争取了。如果争取到不交违约金或者少交一点违约金，一定要写在合同里，并且是写在贷款合同而不是购车合同里。</p>
+<blockquote>
+<p>网上还有其他人说根本没有提前还款要交违约金这一说，如果有这种情况，可以直接拨打 12378 银保监会的电话</p>
+</blockquote>
+<p>我们再来看下贷款买车比全款买车额外产生的一些费用</p>
+<ul>
+<li>手续费（分情况付）</li>
+</ul>
+<p>如果要是做厂商金融贷款，有免息或者贴息政策的话，可以付这个手续费，一般是两到三千块钱。</p>
+<p>如果你做的是银行分期贷款的话，这个手续费一分都不要出，因为 4S 店已经赚你的利息了。</p>
+<ul>
+<li>利息（要付）</li>
+</ul>
+<p>关于利息和利率的计算，前文有所提到。</p>
+<ul>
+<li>其他费用（不需要付）</li>
+</ul>
+<p>什么综合服务费、PDI 检测费、出库费、解押费等等，这些都是不需要自己付的，如果 4S 店跟你说这些钱你不付的话买不了车，那你转头就走，去另外一家店里买去。</p>
+<table>
+<thead>
+<tr>
+<th>全款买车费用</th>
+<th>贷款买车费用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>裸车价</td>
+<td>裸车价</td>
+</tr>
+<tr>
+<td>购置税</td>
+<td>购置税</td>
+</tr>
+<tr>
+<td>保险（交强险、第三责任险、车损险、医保外责任用药险）</td>
+<td>保险（交强险、第三责任险、车损险、医保外责任用药险）</td>
+</tr>
+<tr>
+<td>上牌费</td>
+<td>上牌费</td>
+</tr>
+<tr>
+<td>❌</td>
+<td>贷款手续费（看情况交）</td>
+</tr>
+<tr>
+<td>❌</td>
+<td>利息</td>
+</tr>
+</tbody></table>
+<h2 id="购车后"><a href="#购车后" class="headerlink" title="购车后"></a>购车后</h2><p>确认买车后，我们会交定金并签订购车协议，协议上会明确提车日期。</p>
+<p>提车的时候先别急着交钱，先把下面的步骤走好。因为如果交了钱出了 4S 店再发现汽车有问题，4S 店是不会负责的。</p>
+<h3 id="提车前检查"><a href="#提车前检查" class="headerlink" title="提车前检查"></a>提车前检查</h3><p>参考链接：<a target="_blank" rel="noopener" href="https://wanchemi.com/hao/tichezhuyi/">2023提车注意事项以及验车的步骤 新手必知！很详细！ - 玩车迷 (wanchemi.com)</a></p>
+<ul>
+<li>验车</li>
+</ul>
+<p>验车时应在光线充足的环境下，光线不足可以用手机自带的LED手电筒补光，一定要擦干水渍再验车，因为水渍会起到遮掩效果。验车时主要检查以下几个项目：</p>
+<ol>
+<li><strong>检查漆面有无明显划痕</strong>。重点检查前后杠这些重灾区。</li>
+<li><strong>检查车辆是否重新补漆</strong>。用手背感受漆面，如感觉漆面发涩，不顺滑，很有可能是补过漆，这种感觉和原厂漆有很明显的区别。</li>
+<li><strong>检查车辆内饰。</strong></li>
+<li><strong>检查车辆生产日期</strong>。生产日期在车身铭牌处，名牌一般在副驾驶 A 柱下方。一般来讲，3 个月内的叫做近期车，6 个月以上称为库存车，如果销售提前告知你并且价格实惠，那么 6 个月以上库龄的车完全可以接受，如销售未提前告知你，建议换车。不然新车价格买库存车，说的就是你冤大头。</li>
+</ol>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240417221128988.png" class="" title="image-20240417221128988">
+
+
+
+<ol start="5">
+<li><strong>检查轮胎生产日期。</strong>轮胎生产日期由四个数字组成：前面2个数字代表星期，后面2个数字代表年份。比如说 1123 表示轮胎是 2023 年第 11 周生产的。</li>
+</ol>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240417220325957.png" class="" title="3906，说明轮胎出厂日期为：06 年第 39 个星期，即9月上旬左右">
+
+
+
+<ol start="6">
+<li><strong>检查玻璃生产日期</strong>。挡风玻璃上也有生产日期的标识，如下图，数字代表最近生产年份，点代表生产月份，点在数字左边，说明是上半年生产，用 7 减去黑点数，得出具体年份；如果点在数字右边，说明是下半年生产，用 13 减去黑点数，得出具体年份。如果车窗玻璃距离新车生产日期太远，一年或以上，那么很有可能是车窗玻璃被更换过。</li>
+</ol>
+<img src="/2024/04/26/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%B4%AD%E8%BD%A6%E6%8C%87%E5%8D%97/image-20240417221437477.png" class="" title="image-20240417221437477">
+
+
+
+<ol start="7">
+<li><strong>检查公里数及各种随车工具。</strong>100 公里内都是正常的。</li>
+<li><strong>检查发动机</strong>。启动车辆，检查发动机是否有明显杂音和异常抖动，最好打开前机盖看下有没有渗油漏油的现象。</li>
+<li><strong>检查排气管内壁</strong>。摸一下内壁，如果特别黑的话说明有可能是试驾车。</li>
+</ol>
+<ul>
+<li>付尾款并开发票上保险</li>
+</ul>
+<p>按照合同约定金额付款。在开发票上保险之后记得核对发票金额。</p>
+<ul>
+<li>清点材料</li>
+</ul>
+<p>4S 店需要给我们以下材料：</p>
+<ol>
+<li>购车发票（必须是购车专用发票，共三联）</li>
+<li>车辆出厂合格证（原件）</li>
+<li>保险单</li>
+<li>车辆一致性证书</li>
+<li>车辆三包凭证、使用说明书</li>
+<li>购车合同、贷款合同（贷款买车前提下）</li>
+<li>车钥匙</li>
+<li>前期谈好的赠品</li>
+</ol>
+<ul>
+<li>上牌</li>
+</ul>
+<p>上牌前先买购置税，车管所内部一般有自助缴费机，缴税后拿到完税证明即可办理上牌业务</p>
+<p>上牌大致流程：先领取查验表填写车辆信息，填好查验表和合格证发票登记联放在一起，交给查验员就可以去验车了，验完车直接选号，牌照和行驶证登记证一般当天即出，实在等不及车管所也有牌照邮寄业务。</p>
+<p>需要打临牌的同学记得在未选号之前办理，切记选号后是不能打临牌的。</p>
+<h3 id="正式提车"><a href="#正式提车" class="headerlink" title="正式提车"></a>正式提车</h3><p>牌照到手后，我们就可以正式提车，开开心心地开车走人啦。最后祝大家都能买到自己心仪的汽车！</p>
+</div>
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/25/Linux-systemd-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">Linux systemd 定时任务</span>
+    </a>
+    
+  </nav>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

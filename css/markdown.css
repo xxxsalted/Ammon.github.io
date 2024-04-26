@@ -298,8 +298,8 @@
   font-weight: 600;
 }
 .markdown-body p {
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .markdown-body blockquote {
   margin: 0;
