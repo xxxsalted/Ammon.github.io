@@ -1,58 +1,263 @@
 
 
-  <!DOCTYPE html>
-  <html lang="zh-CN">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="renderer" content="webkit">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="description" content=my_blog >
-  <meta name="keywords" content=404notfound >
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
 
-  <head>
-    <title>
-      聊聊 Linux iowait [ 咸鱼运维杂谈 ]
-    </title>
-  <link rel="alternate" href="/atom.xml" title="咸鱼运维杂谈" type="application/atom+xml">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聊聊 Linux iowait [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
 </head>
-
-  <body>
-
-    <link rel="stylesheet" href="/css/header.css">
-<div class="header">
-  <div class="logo">
-    <span class="pull-left">
-      <a id="site-name" href="/">
-        咸鱼运维杂谈
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
       </a>
-    </span>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+        </div>
+      </div>
+    </nav>
   </div>
-  <ul class="nav-list">
-  </ul>
-</div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux-%E7%9B%B8%E5%85%B3/" class="tag"># Linux 相关</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">聊聊 Linux iowait</h1>
+          <div class="post-meta">
+            <time>4月 25, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
 
-      <!--<link rel="stylesheet" href="/css/top-header.css">
-<div id="top-bar" class="fixed">
-
-  <a class="goto-top" href="#"></a>
-  <ul class="bar-list bar-list-1">
-  </ul>
-</div>-->
-
-        <div id="content-outer">
-          <div class="content-inner">
-            <link rel="stylesheet" href="/css/post.css">
-<div class="posts">
-  <a href="/index.html"><i class="fa fa-home
-replay-btn" aria-hidden="true"></i></a>
-  <div class="post-title">
-    <p>
-      聊聊 Linux iowait
-    </p>
-    <hr>
-  </div>
-  <div class="post-content">
-    <h1 id="聊聊-Linux-iowait"><a href="#聊聊-Linux-iowait" class="headerlink" title="聊聊 Linux iowait"></a>聊聊 Linux iowait</h1><p>哈喽大家好，我是咸鱼。</p>
+          <div class="page-content"><h1 id="聊聊-Linux-iowait"><a href="#聊聊-Linux-iowait" class="headerlink" title="聊聊 Linux iowait"></a>聊聊 Linux iowait</h1><p>哈喽大家好，我是咸鱼。</p>
 <p>我们在使用 <code>top</code> 命令来查看 Linux 系统整体 CPU 使用情况的时候，往往看的是下面这一列：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 <span class="built_in">id</span>,  68.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br></pre></td></tr></table></figure>
 
@@ -143,32 +348,50 @@ replay-btn" aria-hidden="true"></i></a>
 <li>有进程因为等待 I&#x2F;O 操作而阻塞，但这并不意味着系统不可以运行其他进程。</li>
 </ol>
 <p>4）系统 iowait 低不能说明进程没有阻塞在 I&#x2F;O 上。因为 CPU 在 iowait 状态的时候能执行其他进程。</p>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/04/25/Linux-systemd-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">Linux systemd 定时任务</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/24/hello-world/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">Hello World</span>
+    </a>
+    
+  </nav>
 
-  </div>
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
   
-</div>
-          </div>
-        </div>
+  
 
-        <link rel="stylesheet" href="/css/footer.css">
-<div class="bottom-outer">
-  <div class="copyright">©2021 - 2021 By Tanger</div>
-  <div class="framework-info">
-    <span>Power by</span>
-    <a class="a1" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
-    <span class="footer-separator">|</span>
-    <span>Theme by</span>
-    <a class="a2" target="_blank" rel="noopener" href="https://github.com/redhat123456/hexo-theme-MiHoYo">MiHoYo</a>
-  </div>
-</div>
-
-          
-            <!-- scripts list from theme config.yml -->
-            
-              <script src="/js/MiHoYo.js"></script>
-              
-                
-
-  </body>
-
-  </html>
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
