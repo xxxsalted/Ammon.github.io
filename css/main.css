@@ -896,7 +896,7 @@ pre .xml .cdata {
   color: #6b7f94;
   opacity: 0.3;
   content: attr(data-lang);
-  font-size: 1.9em;
+  font-size: 20px;
   font-weight: 700;
   position: absolute;
   right: 0.3rem;
