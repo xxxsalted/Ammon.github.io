@@ -105,7 +105,10 @@ replay-btn" aria-hidden="true"></i></a>
 
 
 <p>关于 systemd unit 相关的内容这里就不细讲了，大家可以看我之前的文章：《<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNzI1MzE2Mw==&mid=2247485486&idx=1&sn=fafbbf884603e63308d085d99e5f77e0&chksm=c293086af5e4817cf3c4cea6136cbbbf7689a6b91e32f17259d5f1b23e067fd15ea382891401&token=1980629016&lang=zh_CN#rd">systemctl 命令设置开机自启动失败 </a>》</p>
-<p><img src="/.io//image-20240415094008436.png" alt="image-20240415094008436"></p>
+<img src="/2024/04/25/Linux-systemd-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/1.jpg" class="" title="image">
+
+
+
 <h2 id="设置-systemd-定时任务"><a href="#设置-systemd-定时任务" class="headerlink" title="设置 systemd 定时任务"></a>设置 systemd 定时任务</h2><p>有一个检查 https 证书是否过期的脚本 <code>check_https.sh</code>，我们现在需要系统定期执行这个脚本，除此之外，系统在开机之后也会执行这个脚本。</p>
 <p><strong>首先创建一个 service unit</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /usr/lib/systemd/system/check-https.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=check https certificates</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=check_https.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
