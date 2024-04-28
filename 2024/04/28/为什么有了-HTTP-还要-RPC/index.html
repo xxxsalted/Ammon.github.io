@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>为什么有了 HTTP 还要 RPC [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux/" class="tag"># Linux</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">为什么有了 HTTP 还要 RPC</h1>
+          <div class="post-meta">
+            <time>4月 28, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><h1 id="为什么有了-HTTP-还要-RPC"><a href="#为什么有了-HTTP-还要-RPC" class="headerlink" title="为什么有了 HTTP 还要 RPC"></a>为什么有了 HTTP 还要 RPC</h1><p>哈喽大家好，我是咸鱼</p>
+<p>随着互联网技术的发展，分布式架构越来越被人们所采用。在分布式架构下，<strong>为了实现复杂的业务逻辑，应用程序需要分布式通信实现远程调用</strong></p>
+<p>而这时候就需要一种协议来支持远程过程调用，以便实现不同应用程序之间的数据交换和信息传递。其中常用的协议包括 HTTP 协议和 RPC 协议</p>
+<p>HTTP 协议和 RPC 协议都是用于计算机之间进行通信的协议。那么小伙伴们有没有想过<strong>它们之间有什么区别呢？有了HTTP为什么还要RPC呢？</strong></p>
+<p>为了解答上面的疑问，我们先从这两个协议的介绍开始</p>
+<h2 id="HTTP-和-RPC"><a href="#HTTP-和-RPC" class="headerlink" title="HTTP 和 RPC"></a>HTTP 和 RPC</h2><ul>
+<li>HTTP</li>
+</ul>
+<p>学过计算机网络的小伙伴们相信对下面这段话再熟悉不过了：</p>
+<p><strong>HTTP（HyperText Transfer Protocol，超文本传输协议）协议</strong>，主要用于在 Web 浏览器和 Web 服务器（B&#x2F;S架构）之间传输超文本标记语言（HTML）文件，支持客户端和服务器之间的通信</p>
+<p>HTTP 协议是网络传输协议中应用最为广泛的一种，HTTP 协议基于请求&#x2F;响应模型，通过在客户端和服务器之间交换请求和响应来传输数据。</p>
+<p>它简单、灵活、可扩展，而且最重要的是——它是一种无状态协议，也就是说，每次客户端和服务器之间交换请求和响应时，HTTP协议都是一张白纸，不会记住之前的任何信息</p>
+<p>而无状态协议重要的一点优势是可靠，即使某个请求失败或者丢失，也不会影响到其他请求的处理</p>
+<p>HTTP 协议使用文本格式进行传输，方便开发人员去阅读和调试，又因具有可跨平台、可扩展、可缓存、可重用等优点被广泛应用于 Web 开发中，常用于网页访问、图片加载等场景</p>
+<p>看到这里，小伙伴可能会想，<strong>HTTP 这么神，它真的就一点缺点没有吗？</strong>当然肯定是有的</p>
+<p>前面我们说到 HTTP 协议是无状态的，也就是说每次请求和响应之间是没有关联的，服务器不会记住之前的任何信息，所以会导致每次请求都要重新建立连接</p>
+<p>在处理一些长连接或高并发的场景时，每次请求都需要重新建立连接，而这个过程不但会增加了网络开销和延迟，还会消耗服务器的资源，从而降低了效率。如果使用有状态的协议，服务器可以记住之前的信息，避免了重复建立连接的过程</p>
+<p>除此之外，因为 HTTP 协议最初设计的目的是为了在客户端和服务器之间传输 HTML 文档，即数据传输格式是基于文本的</p>
+<p>所以说 HTTP 协议不支持类型化的数据传输和自定义协议扩展，请求和响应的格式是固定的，这就导致了它不能很好地支持自定义数据结构和复杂逻辑</p>
+<p>简单来说，HTTP 协议有点“死板”</p>
+<ul>
+<li>RPC</li>
+</ul>
+<p><strong>RPC（Remote Procedure Call，远程过程调用）协议是一种进程间通信协议</strong>，用于实现分布式应用程序之间的远程调用，使得不同的应用程序可以像调用本地程序一样调用远程程序</p>
+<p><strong>RPC 协议基于函数调用模型</strong>。在 RPC 协议中，客户端调用远程服务器上的函数时，会将参数打包成消息并发送给服务器，服务器接收到消息后，解包参数并执行相应的函数，最后将结果打包成消息并发送回客户端、</p>
+<p>这这个过程对于客户端来说是透明的，就像调用本地函数一样，即 RPC 可以实现在不同的进程或不同的机器之间进行函数调用</p>
+<p>它具有网络传输速度快、协议扩展性好等优点（因为采用了二进制数据传输格式，相对于HTTP等基于文本的协议，二进制格式传输数据更加高效）。不但如此，RPC 的设计初衷就是支持多种数据格式和传输协议，这使得它可以很好地支持复杂的数据结构和逻辑</p>
+<p>此外，RPC 协议可以使用更高效的编码和传输协议，还可以使用异步调用来提高响应速度</p>
+<p>我们常说，<strong>世上没有完美的东西，HTTP 如此，RPC 也是如此</strong></p>
+<p>与 HTTP 相比，RPC 更加复杂。为了实现 RPC 协议的设计目标（高效、灵活和可扩展），它需要定义更多的接口和协议，同时需要更多的配置和管理。当然这会提高开发和运维的难度</p>
+<p>为了支持跨语言、跨平台的远程调用，RPC 通常不包含安全机制。如果不采取额外的安全措施，就有可能存在身份伪造、数据篡改、拒绝服务等安全问题</p>
+<p>为了保护网络安全，我们可以在 RPC 中实现额外的安全措施：</p>
+<ol>
+<li>例如使用SSL&#x2F;TLS协议进行加密通信</li>
+<li>使用数字证书进行身份验证</li>
+<li>使用访问控制列表进行授权</li>
+<li>进行安全审计和漏洞扫描</li>
+</ol>
+<p>前面我们说到，RPC 通常采用二进制数据传输格式，而不是基于文本的格式。二进制格式虽然传输效率高，但是需要额外的计算资源来序列化和反序列化参数和返回值</p>
+<blockquote>
+<p> 在 RPC 中，客户端和服务器之间需要将参数和返回值打包成二进制数据，并在网络上传输。这个过程需要将参数和返回值转换为二进制格式，并进行压缩和编码，以减少数据传输量</p>
+<p> 对于接收方，需要将接收到的二进制数据解码并转换为原始数据格式。这个过程需要消耗额外的计算资源</p>
+<p> 因此，RPC需要额外的网络带宽和计算资源来序列化和反序列化参数和返回值</p>
+</blockquote>
+<h2 id="HTTP-和-RPC-的区别"><a href="#HTTP-和-RPC-的区别" class="headerlink" title="HTTP 和 RPC 的区别"></a>HTTP 和 RPC 的区别</h2><ol>
+<li>目的不同</li>
+</ol>
+<p>HTTP 是一种无状态的协议，它的主要目的在客户端和服务器之间交换请求和响应来传输文本内容</p>
+<p>RPC 是一种有状态的协议，它的主要目的是在客户端和服务器之间传递信息并调用远程函数</p>
+<ol start="2">
+<li>传输方式不同</li>
+</ol>
+<p>HTTP 使用文本（如 HTML、XML、JSON等）作为载体，并且使用明文传输</p>
+<p>RPC可以使用多种格式传输（例如二进制格式），并且可以使用额外的安全加密技术保证传输安全性</p>
+<ol start="3">
+<li>通信方式不同</li>
+</ol>
+<p>HTTP 使用的是请求&#x2F;响应模型，客户端向服务器发送请求并等待响应。客户端发送一个请求，服务器返回一个响应</p>
+<p>RPC 使用的是调用&#x2F;返回模型，客户端调用服务器上的远程函数并等待返回结果。RPC 支持多种不同的调用方式，如同步调用、异步调用、流式调用等</p>
+<h2 id="有了-HTTP-为什么还要-RPC？"><a href="#有了-HTTP-为什么还要-RPC？" class="headerlink" title="有了 HTTP 为什么还要 RPC？"></a>有了 HTTP 为什么还要 RPC？</h2><p>虽然 HTTP 已经成为了网络通信的重要标准之一而且被广泛应用于互联网上的各种场景，但是在某些情况下，它并不能满足用户的需求</p>
+<p>例如在一些复杂的分布式应用场景下（分布式系统中的服务调用、微服务架构中的服务间通信等），RPC 协议要比 HTTP 协议更适合</p>
+<p>咸鱼将从以下几点来阐述一下 RPC 为什么更适合复杂的分布式应用场景</p>
+<p><strong>从时效性度来看</strong></p>
+<ul>
+<li>HTTP 协议的数据格式有一定的局限性，比如只能传输文本，传输效率低下</li>
+<li>HTTP协议是基于请求&#x2F;响应模型，每次请求都需要建立一个新的连接，这样会增加网络开销</li>
+<li>相比于 HTTP 协议，RPC 协议通常使用二进制数据格式进行传输，通常<strong>具有更高的传输效率和更低的网络延迟</strong></li>
+<li>相比于 HTTP 协议，RRPC协议还支持异步调用和批量调用等高级特性，可以提高系统的性能和吞吐量</li>
+</ul>
+<p><strong>从安全性来看</strong></p>
+<ul>
+<li>HTTP 是一种文本协议，数据传输使用的是明文，这样就容易被中间人窃听或者篡改数据（不过可以使用SSL&#x2F;TLS 协议对数据进行加密和认证）</li>
+<li>相比于 HTTP 协议，RPC 支持传输各种类型的数据（比如二进制），<strong>可以更快灵活地传输大量数据</strong>，并且也可以加密传输以保证安全性</li>
+</ul>
+<p><strong>从场景复杂度来看</strong></p>
+<ul>
+<li>在复杂的业务逻辑和数据结构场景下，通常需要进行多次请求和响应操作，而 HTTP 作为无状态协议无法保持会话状态，每次请求和响应都需要重新建立连接和传输数据，这会导致网络延迟和性能下降</li>
+<li>HTTP协议的请求和响应通常是基于文本或二进制数据格式，无法直接支持复杂的数据结构，例如对象、数组、枚举等</li>
+<li>相比于 HTTP 协议，RPC 是一种有状态协议，而且 RPC 可以通过定义接口和方法来封装业务逻辑，使得客户端可以通过简单的调用来完成复杂的操作</li>
+<li>相比于 HTTP 协议，RPC协议是一种面向对象的协议，它可以直接支持复杂的数据结构，例如对象、数组、枚举等</li>
+</ul>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%81%AD%E5%8F%97%E6%94%BB%E5%87%BB%E4%B9%8B%E5%90%8E%E7%9A%84%E5%B8%B8%E8%A7%81%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%A4%84%E7%90%86/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">服务器遭受攻击之后的常见思路及处理</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">socket 到底是个啥</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

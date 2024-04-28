@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>socket 到底是个啥 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E7%BD%91%E7%BB%9C/" class="tag"># 网络</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">socket 到底是个啥</h1>
+          <div class="post-meta">
+            <time>4月 28, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><h1 id="socket-到底是个啥"><a href="#socket-到底是个啥" class="headerlink" title="socket 到底是个啥"></a>socket 到底是个啥</h1><p>哈喽大家好，我是咸鱼</p>
+<p>我相信大家在面试过程中或多或少都会被问到这样一个问题：<strong>你能解释一下什么是 socket 吗</strong></p>
+<p>我记得我当初的回答很是浅显：socket 也叫套接字，用来负责不同主机程序之间的网络通信连接，socket 的表现方式由四元组（ip地址：端口）组成</p>
+<p>那么今天，咸鱼将跟大家打开 socket 的神秘大门，不但要搞清楚 socket 的概念，最好还能够了解它的底层实现</p>
+<p>我们首先查看一下 socket 的翻译</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411094900903.png" class="" title="image-20230411094900903">
+
+
+
+<p>我们看到，socket 可以翻译成插座、插头，那现在请想象这么一个场景：<strong>给手机充电时，你将充电插头插入电源插座里面，是不是意味着插座与充电插头连接起来了</strong></p>
+<p>在计算机世界中，socket 翻译成套接字，通过 socket 我们可以与某台服务器进行连接，而建立连接的过程，你可以脑补成将充电插头插进插座的过程</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411100858598.png" class="" title="image-20230411100858598">
+
+
+
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411131125668.png" class="" title="image-20230411131125668">
+
+
+
+<h2 id="socket-使用场景"><a href="#socket-使用场景" class="headerlink" title="socket 使用场景"></a>socket 使用场景</h2><p>假设我们想要将数据从 A 电脑的某个进程传送到 B 电脑的某个进程（比如咸鱼用微信发信息给冰冰）</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411102834038.png" class="" title="image-20230411102834038">
+
+
+
+<p>那么在与对方聊天的过程中，其实就是这两台电脑中的微信进程相互传输数据的过程</p>
+<p>在这个过程中，两台电脑各自调用 socket 方法，然后会得到一个 fd 句柄（socket_fd），这个 fd 句柄就相当于 socket 的身份证号</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket_fd = socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>得到 fd 句柄之后：</p>
+<ol>
+<li>服务端执行 bind()、listen()、accept() 方法等待客户端建立连接的请求</li>
+<li>客户端执行 connect() 方法向服务端发起连接</li>
+<li>连接建立起来之后，两端都可以执行 send()、recv() 方法来互相传递数据</li>
+</ol>
+<p>PS：对于不同的传输层协议，上面这个过程是不一样的，详情可以查看我之前的文章《python 网络编程》</p>
+<p><strong>TCP 协议</strong></p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230216084702695.png" class="" title="image-20230216084702695">
+
+
+
+<p><strong>UDP 协议</strong></p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230216090008989.png" class="" title="image-20230216090008989">
+
+
+
+<h2 id="socket-设计"><a href="#socket-设计" class="headerlink" title="socket 设计"></a>socket 设计</h2><p>我们知道了 socket 是用来实现网络传输功能的，它负责不同主机进程之间的网络通信连接</p>
+<p>我将上面的问题改一下，把 <strong>”socket 是什么“</strong> 改成 <strong>”如果让你来实现一个网络传输功能，你会怎么设计“</strong></p>
+<p>网络传输功能，简单点来讲就是两端服务器之间进行网络通信并互相收发数据，收发数据也就是读写数据</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411105543022.png" class="" title="image-20230411105543022">
+
+
+
+<p>首先我们会遇到第一个问题：<strong>茫茫互联网中你怎么能找到那台梦中情机</strong></p>
+<p>聪明的你肯定会想到——ip地址！我们用 ip 地址来定位电脑</p>
+<p>找到了你的梦中情机之后，你会发现，<strong>一台电脑上面这么多进程，我怎么才能找到与我通信的那个进程（比如说微信）</strong></p>
+<p>聪明的你很快就想到了用端口号（port）</p>
+<p>可以这么理解，ip 地址是用来定位街区的，而端口号 port 对应这个街区中的门牌号，通过 ip +port 的组合，你可以在茫茫互联网中找到属于你的梦中情机并且与之通信</p>
+<p>所以<strong>你在设计网络传输功能初期，定义了一个数据结构 sock，sock 里面包含了 ip 和 port 字段（假设用 C 语言实现）</strong></p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411110520452.png" class="" title="image-20230411110520452">
+
+
+
+
+
+<p>在 Linux 中（以 CentOS 7举例），在头文件<code>/usr/include/netinet/in.h</code>可以看到负责套接字地址的 sock 结构体</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230412153930775.png" class="" title="image-20230412153930775">
+
+
+
+<blockquote>
+<p><code>sin_family</code> 字段为 AF_INET，<code>sin_port</code> 表示端口号，<code>sin_addr</code> 表示 IPv4 地址，是一个 <code>struct in_addr</code> 类型的结构体</p>
+<p><code>sin6_family</code> 字段为 AF_INET6，<code>sin6_port</code> 表示端口号，<code>sin6_addr</code> 表示 IPv6 地址，是一个 <code>struct in6_addr</code> 类型的结构体</p>
+</blockquote>
+<p>解决了定位问题之后，我们知道在计算机网络中有很多协议，这些协议规定了计算机之间的通信方式</p>
+<p>比如你是选用可靠的 TCP 协议去进行网络通信，还是相对不可靠的 UDP 协议</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411111356888.png" class="" title="image-20230411111356888">
+
+
+
+<p>不同的网络协议还对应着不同的网络通信场景，如果你选择了 TCP协议，你还得考虑例如滑动窗口、超时重传这些场景</p>
+<p>所以有了 ip 和 port 还不行，你还<strong>需要定义新的数据结构用来维护网络协议以及对应的网络场景</strong>。</p>
+<p>又因为不同的网络协议中有一些功能相似的方法（例如收发数据），于是你决定将不同协议中的公共的部分提取出来，通过”继承“的方式来实现功能复用</p>
+<p>所以可以先定义一个名为 sock 的数据结构，然后定义”继承“ sock 的各类 sock </p>
+<p>**PS：Linux 内核是用 C 语言实现的，在 C 语言中没有继承这个概念，你可以简单将这个继承理解成 xx_sock 基于 sock 进行了扩展，xx_sock 是 sock 的进阶版 **</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411135249425.png" class="" title="image-20230411135249425">
+
+
+
+<ul>
+<li><code>sock</code>：最基础的结构，用来维护任何网络协议都会用到的<strong>收发数据缓冲区</strong>（公用部分）</li>
+<li><code>inet_sock</code>：负责网络传输功能的 sock，在 sock 基础上加了 TTL（网络生存时间）、ip 地址和端口号这些跟网络传输相关的字段信息</li>
+<li><code>inet_connection_sock</code>：面向连接的 sock，在 <code>inet_sock</code> 基础上添加了面向连接的协议里相关字段，比如 accept 队列，数据包分片大小，握手失败，重试次数等；虽然我们现在提到面向连接的协议就是指 TCP，但从设计上 Linux 需要支持扩展其他面向连接的新协议，比如 SCTP 协议，所以说 <code>tcp_sock</code> 则是在这个基础上实现的真正的 TCP 协议专用 sock 结构</li>
+</ul>
+<p>上面例子中的这些 sock 都可以在系统上直接找到，以 CentOS 7 为例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#inet_sock</span></span><br><span class="line">/usr/src/kernels/内核版本.debug/include/net/inet_sock.h</span><br><span class="line"></span><br><span class="line"><span class="comment">#inet_connection_sock</span></span><br><span class="line">/usr/src/kernels/内核版本.debug/include/net/inet_connection_sock.h</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411135728772.png" class="" title="image-20230411135728772">
+
+
+
+<p>现在你用代码实现了这一堆数据结构——sock，不同的 sock 分别实现自己职责内的功能（负责面向连接的数据结构 <code>inet_connection_sock</code>、负责 UDP 协议的数据结构 <code>udp_sock</code> 等等）</p>
+<p>但是你需要这些 sock 去跟硬件网卡交互才能实现网络传输的功能，既然需要跟硬件交互，那就说明<strong>需要比较高的操作系统权限</strong></p>
+<p>同时考虑到性能和安全，这套数据结构不能放在用户态，需要给它放<strong>到系统内核里面</strong></p>
+<p>既然这套数据结构在内核里，处在用户态的程序想要用这套数据结构来实现网络传输功能该怎么办呢？</p>
+<p>除此之外，处在用户态的程序并不关心也不知道你这套数据结构在底层内核是怎么操作的，功能是怎么实现的，它只关心结果</p>
+<p>于是你想到了用接口调用的方式——你<strong>将一个个功能抽象一个个接口，以后别人只需要调用这些接口，就可以让内核中这一大堆复杂的数据结构去实现指定功能</strong></p>
+<p>又因为在 <strong>Linux 中一切皆文件</strong>，你索性将这些 sock 封装成文件，当用户态的程序去调用你提供的接口时，需要先创建一个 sock 文件</p>
+<p>这个新生成的 sock 文件有一个文件句柄 fd，用户态的程序只需要拿着这个 fd 就可以对内核中的 sock 进行操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sock 文件句柄 socket_fd</span></span><br><span class="line">socket_fd = socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411143421572.png" class="" title="image-20230411143421572">
+
+
+
+<p>上面有说到，你将不同的数据结构（<code>inet_sock</code>、<code>tcp_sock</code> 等等）抽象成一个个 API 接口，以后别人只需要调用这些 API 接口就可以驱动我们写好的这一大堆复杂的数据结构去进行网络传输</p>
+<p>下面列出了一些常见的接口：</p>
+<ul>
+<li>send</li>
+<li>recv</li>
+<li>bind</li>
+<li>listen</li>
+<li>connect</li>
+</ul>
+<p>到这里，整个网络传输功能就已经基本实现了。上面列举出来的这些方法，其实就是 socket 提供出来的接口</p>
+<p>到这里，我们对 socket 有了一个更深的了解——socket 其实相当于一个接口层，它处在内核态和用户态之间：</p>
+<ul>
+<li>向上用户态<ul>
+<li>为处在用户态的程序提供 API 接口，方便用户态程序实现网络传输功能</li>
+</ul>
+</li>
+<li>向下内核态<ul>
+<li>对网卡进行操作，负责网络传输工作</li>
+</ul>
+</li>
+</ul>
+<p>或者你也可以这么理解，<strong>处在用户态的程序通过 socket 提供的接口，将网络传输的这部分工作外包给了 Linux 内核</strong></p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411145643708.png" class="" title="image-20230411145643708">
+
+
+
+<p>我们以 tcp 协议为例子来看下 python 中是如何操作 socket 的</p>
+<ul>
+<li>客户端</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建一个 socket 并获得 socket 文件的句柄</span></span><br><span class="line">socket_fd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment">#调用 connect 接口进行连接</span></span><br><span class="line">socket_fd.connect((<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="number">9999</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#调用 send 接口进行数据传输</span></span><br><span class="line">socket_fd.send(data)</span><br><span class="line"></span><br><span class="line"><span class="comment">#调用 close 接口关闭 socket</span></span><br><span class="line">socket_fd.close()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在客户端中，程序首先调用 socket 提供的 socket 方法创建一个 socket 文件来获得 socket 句柄，然后调用 connect 方法，这时候内核会根据 socket_fd 找到对应的 sock 文件</p>
+<p>再根据文件里的信息找到处在内核的 sock 结构，通过 sock 结构与服务端进行三次握手建立连接</p>
+<p>连接建立好之后，客户端调用 send 方法来进行数据传输，sock 中定义了一个发送缓冲区和接收缓冲区，其实就是一个链表，链表上面放着一个个等待发送或接收的数据</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我们再次回到那个问题——socket 是什么？</p>
+<p><strong>sock（或 socket）是操作系统内核提供的一种数据结构，用于实现网络传输功能</strong></p>
+<p><strong>基于不同的网络协议以及应用场景，衍生了各种类型的 sock，每个网络层协议都有相应的 sock 结构体来管理该层协议的连接状态和数据传输。各类 sock 操作硬件网卡，就实现了网络传输的功能</strong></p>
+<p><strong>为了将这些功能让处在用户态的应用程序使用，不但引入了 socket 层，还将各类功能的实现方式抽象成了 API 接口，供应用程序调用</strong></p>
+<p><strong>同时将 sock 封装成文件，应用程序就可以在用户层通过文件句柄（socket fd）来操作内核中 sock 的网络传输功能</strong></p>
+<p><strong>这个 socket fd 是一个 int 类型的数字，而 socket 中文翻译叫做套接字，结合这个 socket fd，你是不是可以将其理解成：一套用于连接的数字</strong></p>
+<p><strong>而 socket 分 Internet socket 和 UNIX Domain socket，两者都可以用于不同主机进程间的通信和本机进程间的通信，只是前者采用的是基于 IP 协议的网络通信方式，而后者采用的是基于本地文件系统的通信方式</strong></p>
+<p>关于 UNIX Domain socket，可以通过 <code>netstat -x</code> 查看</p>
+<img src="/2024/04/28/socket-%E5%88%B0%E5%BA%95%E6%98%AF%E4%B8%AA%E5%95%A5/image-20230411153429695.png" class="" title="image-20230411153429695">
+
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/04/28/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%BA%86-HTTP-%E8%BF%98%E8%A6%81-RPC/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">为什么有了 HTTP 还要 RPC</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">博客添加评论功能及定制化样式</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
