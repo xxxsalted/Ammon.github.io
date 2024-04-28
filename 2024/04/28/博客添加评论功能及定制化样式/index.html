@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>博客添加评论功能及定制化样式 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag"># 博客</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">博客添加评论功能及定制化样式</h1>
+          <div class="post-meta">
+            <time>4月 28, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼。</p>
+<p>在搭建了博客并换了主题之后，发现有许多细节方面的东西还需要完善和定制化一下，比如说行距和引用的样式我不是很喜欢，以及没有评论功能。</p>
+<p>于是决定自己动手，说干就干。</p>
+<blockquote>
+<p>PS：下文的修改操作仅限于博客主题（Klise），不同主题的配置文件可能会不一样，不过大体思路都是差不多的，即修改 <code>scss/config/ejs</code> 文件。</p>
+</blockquote>
+<h2 id="Valine-评论系统"><a href="#Valine-评论系统" class="headerlink" title="Valine 评论系统"></a>Valine 评论系统</h2><p>搜了网上的教程，决定采用 <a target="_blank" rel="noopener" href="https://valine.js.org/">Valine </a>来实现博客评论功能。</p>
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085208682.png" class="" title="image-20240428085208682">
+
+
+
+<p>因为 Valine 的存储是基于 <a target="_blank" rel="noopener" href="https://www.leancloud.cn/">LearnCloud</a> 的，所以我们要先注册一个 LeanCloud 账号。</p>
+<p>登录之后进入【控制台】点击【创建应用】</p>
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085716880.png" class="" title="image-20240428085716880">
+
+
+
+<p>应用创建好以后，进入刚刚创建的应用，选择左下角的【设置】 &gt; 【应用凭证】，然后就能看到你的 <code>APP ID</code> 和 <code>APP Key</code> 了：</p>
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085934208.png" class="" title="image-20240428085934208">
+
+
+
+<p>进入到你的博客根目录，找到你对应主题的主配置文件 <code>_config.yml</code>，添加关于 Valine 的配置字段。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">comments:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span> <span class="comment"># 开启评论系统</span></span><br><span class="line">  <span class="built_in">type</span>: valine <span class="comment"># 采用哪种评论系统</span></span><br><span class="line">  button: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">valine:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">  appid: <span class="comment"># 从 LeanCloud 的应用中得到的 appKey</span></span><br><span class="line">  appkey: <span class="comment"># 从 LeanCloud 的应用中得到的 appId.</span></span><br><span class="line">  placeholder: <span class="string">&quot;说点什么吧！&quot;</span> <span class="comment"># 评论框占位提示符</span></span><br><span class="line">  path: window.location.pathname <span class="comment"># 当前文章页路径，用于区分不同的文章页，以保证正确读取该文章页下的评论列表。</span></span><br><span class="line">  avatar: /img/redcat.jpg <span class="comment"># Gravatar 头像</span></span><br><span class="line">  guest_info: nick,mail,<span class="built_in">link</span> </span><br><span class="line">  pageSize: 10 <span class="comment"># 评论列表分页，每页条数。</span></span><br><span class="line">  recordIP: <span class="literal">false</span> <span class="comment"># 是否记录评论者IP</span></span><br><span class="line">  serverURLs: <span class="comment"># 该配置适用于国内自定义域名用户, 海外版本会自动检测</span></span><br><span class="line">  emojiCDN: <span class="comment"># 设置表情包 CDN</span></span><br><span class="line">  enableQQ: <span class="literal">true</span> <span class="comment"># 是否启用昵称框自动获取QQ昵称和QQ头像, 默认关闭</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置好之后进入 <code>Git bash</code> 窗口，重新生成一下静态文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后在本地测试一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是<strong>发现没有生效</strong>，一开始我还以为配置格式不对（yaml 格式要求比较严格），再三重复确认了格式没问题之后，还是没有生效。</p>
+<p>我就在想是不是没有渲染出来，然后去到主题目录下的 <code>layout</code> 目录，发现了 <code>valine.ejs</code> 文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;博客根目录&gt;\Klise\layout\partials\_comments\valine.ejs</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428092859252.png" class="" title="image-20240428092859252">
+
+
+
+
+
+<p>打开一看发现里面居然没有内容，然后网上搜了下资料，把相关内容复制粘贴了进去。</p>
+<p>结果发现还是不行，是不是没有去调用这个 ejs 文件？</p>
+<p>打开 <code>&lt;博客根目录&gt;\Klise\layout\partials\_comments\index.ejs</code> 文件查看验证一下，果然如此。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- <span class="title function_">partial</span>(<span class="string">&#x27;partials/_comments/waline&#x27;</span>) %&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>因为我们用的是 Valine，所以把 <code>partials/_comments/waline</code> 改成 <code>partials/_comments/valine</code> 即可。</p>
+<p>再试一下，成功了！</p>
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428093727334.png" class="" title="image-20240428093727334">
+
+
+
+<h2 id="样式定制化"><a href="#样式定制化" class="headerlink" title="样式定制化"></a>样式定制化</h2><p>正文默认的行间距我不是很满意，所以打算改一下，打开我们的博客网页然后点击 <code>F12</code> 查看网页元素。</p>
+<p>发现正文内容的样式字段在 <code>post</code> 类下的 <code>p</code> 标签中，而且在 <code>main.css</code> 文件里面。</p>
+<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428095758739.png" class="" title="image-20240428095758739">
+
+
+
+<p>但是这个 <code>main.css</code> 是动态生成的，即 hexo 生成 public 目录的时候会去找 <code>主题\source</code> 目录下的 sass 文件然后生成 <code>main.css</code> 文件。</p>
+<p>所以我们想要修改样式，就必须找到标签样式对应的 sass 文件。</p>
+<p>我们找到主题目录下的 <code>main.scss</code> 文件，发现他还引用了其他的 sass 文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;博客根目录&gt;\themes\Klise\source\css\main.scss</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Import sass files</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;partials/fonts&quot;</span>,<span class="string">&quot;partials/base&quot;</span>,<span class="string">&quot;partials/layout&quot;</span>,<span class="string">&quot;partials/post&quot;</span>,<span class="string">&quot;partials/miscellaneous&quot;</span>,<span class="string">&quot;partials/dark&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后一个一个去找，最后在 <code>_post.scss</code> 文件下发现了对应的配置字段。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post</span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">8px</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">8px</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来修改引用样式对应的配置，原本引用样式是两端对齐的方式，而且还是斜体，我不是很喜欢。</p>
+<p>发现还是在 <code>_post.scss</code> 文件下，修改如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post</span> <span class="selector-tag">blockquote</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">  <span class="attribute">font-style</span>: normal;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">1.8em</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#999</span>;</span><br><span class="line">  <span class="attribute">text-align</span>: start;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>最后重新生成静态文件并在本地验证，没什么问题就把新修改的内容部署到 Git 上。</p>
+</div>
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">又重新搭了个个人博客</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
