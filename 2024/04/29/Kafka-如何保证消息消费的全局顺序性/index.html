@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kafka 如何保证消息消费的全局顺序性 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux/" class="tag"># Linux</a><a href="/tags/Kafka/" class="tag"># Kafka</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">Kafka 如何保证消息消费的全局顺序性</h1>
+          <div class="post-meta">
+            <time>4月 29, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼</p>
+<p>今天我们继续来讲一讲 Kafka</p>
+<p>当有消息被生产出来的时候，如果没有指定分区或者指定 key ，那么消费会按照【轮询】的方式均匀地分配到所有可用分区中，但不一定按照分区顺序来分配</p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20231127105610363.png" class="" title="image-20231127105610363">
+
+
+
+
+
+<p>我们知道，在 Kafka 中消费者可以订阅一个或多个主题，并被分配一个或多个分区</p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20231127103655711.png" class="" title="image-20231127103655711">
+
+
+
+<p>如果一个消费者消费了多个分区，某些场景下消费者需要顺序地消费消息，但消息并不是按照顺序分配给分区的，所以就不一定能够保证消息消费的全局顺序性</p>
+<p>比如下图中 <code>Msg0002</code> 消息并不是在 <code>Msg0001</code> 消息之后的，就有可能导致消费者先把 <code>Msg0002</code> 消息给消费， <code>Msg0001</code> 消息才被消费</p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20221128145640246.png" class="" title="image-20221128145640246">
+
+
+
+<p>那么这种情况该怎么解决？<strong>如何尽可能地保证消息消费的全局顺序性？（即这些消息具有因果关系）</strong>要想消费消息 B 必须先消费消息 A</p>
+<p>要注意的是，<strong>Kafka 的设计目标是提供高吞吐量和低延迟，而不是强制保证全局有序性</strong></p>
+<p>所以这篇文章探讨的是需要强调全局顺序性场景下的 Kafka 应用</p>
+<h2 id="单分区"><a href="#单分区" class="headerlink" title="单分区"></a>单分区</h2><p>最简单粗暴的方法，虽然 Kafka 不能保证全局消费顺序性，但是<strong>能够保证分区内的消息顺序性</strong></p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20221128151818767.png" class="" title="image-20221128151818767">
+
+
+
+<p>所以我们可以只创建一个分区，并让消费者消费这个分区，这样就能够保证消费的消息是有序的</p>
+<p>但是这样做大大降低了吞吐量和处理效率，容易使得性能出现瓶颈</p>
+<h2 id="基于-key"><a href="#基于-key" class="headerlink" title="基于 key"></a>基于 key</h2><p>在 Kafka 中，基于 key 的消息分配策略是通过消息中的键（key）来确定消息发送到哪个分区</p>
+<p>当生产者发送消息时，可以指定一个键（key），Kafka 使用这个键通过哈希算法来确定消息被发送到哪个分区</p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20221128152458549.png" class="" title="image-20221128152458549">
+
+
+
+<p>由于相同的 key 就发送到同一分区，这样就能够保证了消费的消息是有序的</p>
+<p>然而，如果只有一个消费者消费相同 key 的消息，那么与单分区相比，基于 key 的消息分配策略不会提高吞吐量</p>
+<p>因为即使相同 key 的消息在多个分区中，但同一消费者依然只能从一个分区中消费，这并不会增加整体的处理能力。</p>
+<p>但如果有多个消费者消费相同 key 的消息，基于 key 的分区策略可以提高消费者并行消费的能力</p>
+<img src="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/image-20231127131201251.png" class="" title="image-20231127131201251">
+
+
+
+<p>因为这些消费者可以同时从不同分区中读取消息，从而增加整体的处理速度。这种情况下，基于 key 的消息分配可以提高整体吞吐量</p>
+<p>最后总结一下：</p>
+<ul>
+<li><p>Kafka 的设计目标是提供高吞吐量和低延迟，而不是强制保证全局有序性，所以Kafka使用多分区的概念，并且只保证单分区有序</p>
+</li>
+<li><p>如果想要实现消息的全局有序</p>
+<ul>
+<li><p>单分区策略：</p>
+<p>一个主题下只创建一个分区，一个消费者只消费一个分区，但这样做毫无并发性可言，极大降低系统性能</p>
+</li>
+<li><p>基于 key 的消息分配策略：</p>
+<p>由于相同的 key 就发送到同一分区，这样就能够保证了消费的消息是有序的。然而，如果只有一个消费者消费相同 key 的消息，与前面单分区相比没有什么区别</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/29/%E5%BD%93%E4%BD%A0%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF%E5%B9%B6%E8%BE%93%E5%85%A5%E5%91%BD%E4%BB%A4%E6%97%B6%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-%EF%BC%88%E4%B8%8A%EF%BC%89/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">当你打开终端并输入命令时会发生什么?（上）</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

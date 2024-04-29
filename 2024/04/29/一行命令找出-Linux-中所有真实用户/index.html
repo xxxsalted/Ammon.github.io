@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一行命令找出 Linux 中所有真实用户 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux/" class="tag"># Linux</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">一行命令找出 Linux 中所有真实用户</h1>
+          <div class="post-meta">
+            <time>4月 29, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼。</p>
+<p>接触过 Linux 的小伙伴们都知道在 Linux （或者说类 Unix）中，有三种类型的用户：</p>
+<ul>
+<li>超级用户（UID 为 0）：即 root 用户，拥有最高权限。</li>
+<li>系统用户（UID 为 1~999）：系统内建用户，用于运行系统服务和守护进程。</li>
+<li>普通用户（UID 为 1000~60000）：为了让使用者能够使用 Linux 系统资源而建立的，用户新建的账号一般就是普通账号。</li>
+</ul>
+<p>那么现在问题来了，如何快速找出 Linux 中的真实用户（root 用户和普通用户）？</p>
+<p>正式开始之前，我们先介绍一个工具——<code>getent</code></p>
+<h2 id="getent-命令"><a href="#getent-命令" class="headerlink" title="getent 命令"></a>getent 命令</h2><p>getent 其实是 <strong>“get entries”</strong> 的缩写，功能是用于查看系统数据库中（包括 <code>/etc/passwd</code>、<code>/etc/shadow</code>、<code>/etc/group</code>、<code>/etc/hosts</code> 等）的记录信息，它可以根据指定的数据库类型和键来检索条目。</p>
+<p>1、查看本地的主机文件（<code>/etc/hosts</code>）中包含的指定域名信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># getent hosts 127.0.0.1</span></span><br><span class="line">127.0.0.1       localhost localhost.localdomain localhost4 localhost4.localdomain4</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、查看本地密码文件（<code>/etc/passwd</code>）中指定用户信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># getent passwd user1</span></span><br><span class="line">user1:x:1000:1000::/home/user1:/bin/bash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、从 <code>/etc/group</code> 数据库中检索指定组信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># getent group user1</span></span><br><span class="line">user1:x:1000:</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们回到问题上来：如何快速找出 Linux 中的真实用户（root 用户和普通用户）？</p>
+<p><strong>方法一：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getent passwd | awk -F: <span class="string">&#x27;$3 &gt;= 1000 &amp;&amp; $3 &lt; 65344 || $3 == 0 &#123;print $1&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>getent passwd</code> 用于检索 <code>/etc/passwd</code> 数据库中的所有用户信息</li>
+<li><code>awk</code> 命令：<ul>
+<li><code>-F:</code>：指定字段分隔符为冒号 (<code>:</code>)</li>
+<li><code>$3 &gt;= 1000 &amp;&amp; \$3 &lt; 65344</code>：表示判断第三个字段（用户 ID）大于或等于 1000 且小于 65344。</li>
+<li><code>\$3 == 0</code>：表示判断第三个字段（用户 ID）等于 0</li>
+<li><code>&#123;print $1&#125;</code>：打印第一个字段（用户名）</li>
+</ul>
+</li>
+</ul>
+<p>总结一下：这条命令将检索 <code>/etc/passwd</code> 数据库中的所有用户信息，并打印出用户 ID 大于或等于 1000 且小于 65344，或者用户 ID 等于 0 的所有用户的用户名。</p>
+<p>但是有的小伙伴看到这么一长串的命令就犯难了，”我文本三剑客掌握的不是很好，这条命令尤其是里面的判断看的我头都晕了，还有没有更简单的方法呢？”</p>
+<p><strong>方法二：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getent passwd 0 &#123;1000..60000&#125; | awk -F: <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>getent passwd 0 &#123;1000..60000&#125;</code> 命令用于检索系统中用户 ID 为 0 以及范围从 1000 到 60000 的所有用户信息</li>
+<li><code>awk -F: &#39;&#123;print $1&#125;</code>：表示对前面输出的内容进行处理——打印第一个字段</li>
+</ul>
+<p>这里补充一下：<code>getent passwd 0 &#123;1000..60000&#125;</code> 命令使用花括号扩展 (<code>&#123;1000..60000&#125;</code>) 来生成一个 0 和从 1000 到 60000 的数字序列。</p>
+<p>然后，<code>getent passwd</code> 命令使用这些数字作为参数，以检索系统中用户 ID 为 0 和从 1000 到 60000 的用户信息。</p>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/04/29/%E5%BD%93%E4%BD%A0%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF%E5%B9%B6%E8%BE%93%E5%85%A5%E5%91%BD%E4%BB%A4%E6%97%B6%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88-%EF%BC%88%E4%B8%8B%EF%BC%89/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">当你打开终端并输入命令时会发生什么?（下）</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/29/%E9%80%9A%E8%BF%87-saltstack-%E6%89%B9%E9%87%8F%E6%9B%B4%E6%96%B0-SSL-%E8%AF%81%E4%B9%A6/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">通过 saltstack 批量更新 SSL 证书</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

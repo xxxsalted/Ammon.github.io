@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通过 saltstack 批量更新 SSL 证书 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux/" class="tag"># Linux</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">通过 saltstack 批量更新 SSL 证书</h1>
+          <div class="post-meta">
+            <time>4月 29, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼。</p>
+<p>之前写过两篇关于 SSL 过期巡检脚本的文章：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VQ5pX5VRPYQuPI5CmCq8FQ">SSL 证书过期巡检脚本</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/lXQFayrbPslOvAnw-D6JLQ">SSL 证书过期巡检脚本(Python 版)</a></li>
+</ol>
+<p>这两篇文章都是讲如何通过脚本去<strong>自动检测 SSL 过期时间</strong>的，当我们发现某一域名的 SSL 证书过期之后，就要及时更换。</p>
+<p>如果这个域名下有很多服务器，我们一台一台手动登录机器然后更新证书的话效率是非常低的，所以我们可以通过一些自动化运维工具去完成这些大量重复的工作。</p>
+<p>像 ansible、puppet 这类工具也可以实现同样的效果，但是咸鱼这边主要用的还是 saltstack，所以今天介绍一些如何通过 saltstack 去批量更新 SSL 证书。</p>
+<p>关于 saltstck 的介绍：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNzI1MzE2Mw==&mid=2247484377&idx=1&sn=86df86ed03a893ffc00013417dd7c25c&chksm=c293039df5e48a8b24e25bb0921bca0e7678b31aa0cc81691be0556e2a67762940a3a28d060f&token=1577823467&lang=zh_CN#rd">干货篇 | 自动化运维工具-<em>saltstack</em>（上）</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNzI1MzE2Mw==&mid=2247484384&idx=1&sn=0dd3a65f7667d72d1b2ad5094861b13c&chksm=c29303a4f5e48ab253e46275fbd5481385a24fede02609e9737f52cdd1a4a52d4787cd2630c4&token=1577823467&lang=zh_CN#rd">干货篇 | 自动化运维工具-<em>saltstack</em>（中）</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNzI1MzE2Mw==&mid=2247484390&idx=1&sn=a57f2ecddec8e78c2b9e7f95cc091e16&chksm=c29303a2f5e48ab4754458c0f77211c6953d983c99b4bf4a838b5cf65bcada11bead714011d6#rd">干货篇 | 自动化运维工具-<em>saltstack</em>（下）</a></li>
+</ol>
+<p>首先我们在 salt-master 的主目录下创建一个新的目录，用于存放 SSL 证书和脚本，我自己机器上的 master 主目录为 <code>/home/salt/</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -pv /home/salt/ssl_update/ssl</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后把 SSL 证书放在 <code>/home/salt/ssl_update/ssl</code> 目录下，如果有多个域名的话需要在下面创建多个对应的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost]<span class="comment"># tree /home/salt/ssl_update/</span></span><br><span class="line">/home/salt/ssl_update</span><br><span class="line">├── rollback.sls</span><br><span class="line">├── update.sls</span><br><span class="line">├── ssl</span><br><span class="line">│   ├── domain1</span><br><span class="line">│   │   ├── server.key</span><br><span class="line">│   │   └── server.pem</span><br><span class="line">│   ├── domain2</span><br><span class="line">│   │   ├── server.key</span><br><span class="line">│   │   └── server.pem</span><br><span class="line">│   └── domain3</span><br><span class="line">        ├── server.key</span><br><span class="line">        └── server.pem</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接下来我们开始编写 saltstack 状态脚本：</p>
+<ol>
+<li><code>update.sls</code> 负责更新证书</li>
+<li><code>rollback.sls </code> 负责回滚证书</li>
+</ol>
+<p>因为之前遇到过更新证书之后由于证书链不完整导致证书失效，然后不得不紧急手动还原之前的证书。</p>
+<p>所以觉得有必要做一个回滚操作，这样新证书有问题的时候能够及时自动还原。</p>
+<p>我们先来看一下负责更新证书的 <code>update.sls</code>，这个脚本分成了三个模块：</p>
+<ol>
+<li>SSL 证书备份</li>
+<li>SSL 证书更新</li>
+<li>Nginx 重启</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> domain = <span class="string">&#x27;doamin1&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> ssl_dir = <span class="string">&#x27;/usr/local/nginx/ssl&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> dst_dir = ssl_dir + <span class="string">&#x27;/&#x27;</span> + domain %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> bak_dir = <span class="string">&#x27;/opt/backup/ssl/&#x27;</span> + domain %&#125;</span><br><span class="line"></span><br><span class="line">backup_ssl:</span><br><span class="line">  cmd.run:</span><br><span class="line">      - name: <span class="string">&quot;year=<span class="subst">$(openssl x509 -in &#123;&#123; dst_dir &#125;&#125;/server.pem -noout -dates|grep Before|awk &#x27;&#123;print $4&#125;&#x27;)</span> &amp;&amp; mkdir -p &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span> &amp;&amp; \\cp &#123;&#123;dst_dir&#125;&#125;/* &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">ssl_update:</span><br><span class="line">  file.recurse:</span><br><span class="line">    - <span class="built_in">source</span>: salt://ssl_check/ssl/&#123;&#123;domain&#125;&#125;</span><br><span class="line">    - name: &#123;&#123; dst_dir &#125;&#125;</span><br><span class="line">    - require:</span><br><span class="line">      - cmd: backup_ssl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nginx_reload:</span><br><span class="line">  cmd.run:</span><br><span class="line">    - name: /usr/local/nginx/sbin/nginx -t &amp;&amp; /usr/local/nginx/sbin/nginx -s reload</span><br><span class="line">    - require:</span><br><span class="line">      - file: ssl_update</span><br></pre></td></tr></table></figure>
+
+
+
+<p>首先是变量的定义</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> domain = <span class="string">&#x27;doamin1&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> ssl_dir = <span class="string">&#x27;/usr/local/nginx/ssl&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> dst_dir = ssl_dir + <span class="string">&#x27;/&#x27;</span> + domain %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> bak_dir = <span class="string">&#x27;/opt/backup/ssl/&#x27;</span> + domain %&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>domain</code>: 设置域名为 <code>&#39;doamin1&#39;</code>。</li>
+<li><code>ssl_dir</code>: 设置 SSL 证书存放目录为 <code>&#39;/usr/local/nginx/ssl&#39;</code>。</li>
+<li><code>dst_dir</code>: 设置 SSL 证书实际存放路径为 <code>ssl_dir + &#39;/&#39; + domain</code>。</li>
+<li><code>bak_dir</code>: 设置备份目录为 <code>&#39;/opt/backup/ssl/&#39; + domain</code>。</li>
+</ul>
+<p>然后就是 SSL 证书备份。首先创建名为 <code>backup_ssl</code> 的命令执行模块，通过 <code>cmd.run</code> 执行 shell 命令，这个命令通过 OpenSSL 获取证书的有效期限，然后将证书拷贝到备份目录，以年份为子目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">backup_ssl:</span><br><span class="line">  cmd.run:</span><br><span class="line">      - name: <span class="string">&quot;year=<span class="subst">$(openssl x509 -in &#123;&#123; dst_dir &#125;&#125;/server.pem -noout -dates|grep Before|awk &#x27;&#123;print $4&#125;&#x27;)</span> &amp;&amp; mkdir -p &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span> &amp;&amp; \\cp &#123;&#123;dst_dir&#125;&#125;/* &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这条命令看着很长，其实可以拆解成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取证书有效期限然后赋值给 year 变量</span></span><br><span class="line">year=$(openssl x509 -<span class="keyword">in</span> &#123;&#123; dst_dir &#125;&#125;/server.pem -noout -dates|grep Before|awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建带年份后缀的备份目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 把当前的证书备份到备份目录中</span></span><br><span class="line"><span class="built_in">cp</span> &#123;&#123;dst_dir&#125;&#125;/* &#123;&#123; bak_dir &#125;&#125;/<span class="variable">$&#123;year&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着我们开始更新 SSL 证书。创建名为 <code>ssl_update</code> 的文件递归模块，然后通过 <code>file.recurse</code> 把 salt-master 上的证书复制到指定服务器目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ssl_update:</span><br><span class="line">  file.recurse:</span><br><span class="line">    - <span class="built_in">source</span>: salt://ssl_check/ssl/&#123;&#123;domain&#125;&#125;</span><br><span class="line">    - name: &#123;&#123; dst_dir &#125;&#125;</span><br><span class="line">    - require:</span><br><span class="line">      - cmd: backup_ssl</span><br></pre></td></tr></table></figure>
+
+
+
+<p>更新完之后我们还要对指定服务器上的 Nginx 服务进行配置检查并重启一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nginx_reload:</span><br><span class="line">  cmd.run:</span><br><span class="line">    - name: /usr/local/nginx/sbin/nginx -t &amp;&amp; /usr/local/nginx/sbin/nginx -s reload</span><br><span class="line">    - require:</span><br><span class="line">      - file: ssl_update</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>然后我们看一下负责回滚证书的 <code>rollback.sls</code>，这个脚本分成了两个个模块：</p>
+<ol>
+<li>证书回滚</li>
+<li>Nginx 重启</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> domain = <span class="string">&#x27;doamin1&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> ssl_dir = <span class="string">&#x27;/usr/local/nginx/ssl&#x27;</span> %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> dst_dir = ssl_dir + <span class="string">&#x27;/&#x27;</span> + domain %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> bak_dir = <span class="string">&#x27;/opt/backup/ssl/&#x27;</span> + domain %&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> year = salt[<span class="string">&#x27;pillar.get&#x27;</span>](<span class="string">&#x27;year&#x27;</span>) or salt[<span class="string">&#x27;cmd.run&#x27;</span>](<span class="string">&#x27;echo $(date +%Y) - 1| bc&#x27;</span>) %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rollback:</span><br><span class="line">  cmd.run:</span><br><span class="line">    - name: <span class="string">&quot;cp &#123;&#123; bak_dir &#125;&#125;/<span class="subst">$((&#123;&#123; year &#125;&#125;)</span>)/* &#123;&#123; dst_dir &#125;&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">  cmd.run:</span><br><span class="line">    - name: /usr/local/nginx/sbin/nginx -t &amp;&amp; /usr/local/nginx/sbin/nginx -s reload</span><br><span class="line">    - require:</span><br><span class="line">      - cmd: rollback</span><br></pre></td></tr></table></figure>
+
+
+
+<p>设置变量 year 的命令有点复杂，我们来看一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> year = salt[<span class="string">&#x27;pillar.get&#x27;</span>](<span class="string">&#x27;year&#x27;</span>) or salt[<span class="string">&#x27;cmd.run&#x27;</span>](<span class="string">&#x27;echo $(date +%Y) - 1| bc&#x27;</span>) %&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>salt[&#39;pillar.get&#39;](&#39;year&#39;)</code>: 尝试从<code> Salt Pillar</code> 中获取名为 <code>year</code> 的变量的值。</li>
+<li><code>or</code>: 如果前面的操作未成功（即 <code>year</code> 在 Pillar 中不存在），<code>or</code> 后面的表达式将会被执行。</li>
+<li><code>salt[&#39;cmd.run&#39;](&#39;echo $(date +%Y) - 1| bc&#39;)</code>: 这部分代码使用 SaltStack 的 <code>cmd.run</code> 模块执行一个 shell 命令，该命令通过 <code>date</code> 命令获取当前年份，然后减去 1 得到前一年的年份。<code>bc</code> 是一个计算器工具，用于执行数学运算。</li>
+<li>总结一下：首先从 <code>Salt Pillar</code> 中查找，如果找不到则使用 shell 命令获取前一年的年份，确保在没有 Pillar 配置的情况下也有一个默认的年份</li>
+</ol>
+<p>然后就是 SSL 证书回滚。创建名为 <code>rollback</code> 的命令执行模块，通过 <code>cmd.run</code> 执行 shell 命令</p>
+<p>该命令通过将指定服务器备份目录中指定年份的证书拷贝到 SSL 证书目录实现回滚。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rollback:</span><br><span class="line">  cmd.run:</span><br><span class="line">    - name: <span class="string">&quot;cp &#123;&#123; bak_dir &#125;&#125;/<span class="subst">$((&#123;&#123; year &#125;&#125;)</span>)/* &#123;&#123; dst_dir &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>回滚完之后对指定服务器上的 Nginx 服务进行配置检查并重启一下，上面内容有，这里就不再介绍了。</p>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/04/29/%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%89%BE%E5%87%BA-Linux-%E4%B8%AD%E6%89%80%E6%9C%89%E7%9C%9F%E5%AE%9E%E7%94%A8%E6%88%B7/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">一行命令找出 Linux 中所有真实用户</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/29/%E8%81%8A%E8%81%8A-HTTP-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">聊聊 HTTP 性能优化</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
