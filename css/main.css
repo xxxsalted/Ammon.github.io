@@ -137,8 +137,10 @@ ul li::before {
   top: -1px;
   width: 1.2em;
   position: relative;
-  margin-left: -1.3em;
   font-weight: 700;
+  text-align: right;
+  margin-right: 0.5em;
+  margin-left: -1.6em;
 }
 
 ol {
@@ -890,16 +892,6 @@ pre .xml .cdata {
   line-height: 1.8em;
   color: #999;
   text-align: start;
-}
-
-.post .highlight:before {
-  color: #6b7f94;
-  opacity: 0.3;
-  content: attr(data-lang);
-  font-size: 20px;
-  font-weight: 700;
-  position: absolute;
-  right: 0.3rem;
 }
 
 @media screen and (max-width: 768px) {

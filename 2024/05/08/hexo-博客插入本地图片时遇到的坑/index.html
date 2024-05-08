@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hexo 博客插入本地图片时遇到的坑 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/Linux/" class="tag"># Linux</a><a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag"># 博客</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">hexo 博客插入本地图片时遇到的坑</h1>
+          <div class="post-meta">
+            <time>5月 08, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼。</p>
+<p>最近一直在折腾博客的事，说是 hexo 极易上手，我觉得只仅限于在安装部署的时候，随着对 hexo 的深入使用，发现遇到的问题还是挺多的。</p>
+<p>那今天来讲一下我在把本地图片插入到 hexo 博客文章中遇到的坑。</p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>这是我的 hexo 环境：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo: 7.2.0</span><br><span class="line">node: 18.20.0</span><br><span class="line">npm: 10.5.0</span><br></pre></td></tr></table></figure>
+
+
+
+<p>除此之外，我还安装了一个图片路径转换的插件：<code>hexo-asset-images</code>，版本是 0.03。</p>
+<p>Hexo 配置文件 <code>_config.yml</code> 里有下面这个配置，且将其置为 true</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个功能实际上是Hexo官方文档中提到的资源文件夹功能：<strong>即当你使用 <code>hexo new 新文章</code> 命令生成一篇新文章时，不但会在 <code>\source\_posts</code> 目录下生成一个 <code>新文章.md</code> 文件，还会生成一个同名的文件夹，这个文件夹下面可以存放该文章的所有资源（例如图片、附件等）</strong> </p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508093403303.png" class="" title="image-20240508093403303">
+
+
+
+<blockquote>
+<p>实际上你可以不用 <code>hexo new</code> 命令，直接在 <code>\source\_posts</code> 下创建一个 md 文件和同名的文件夹也能达到一样的效果。</p>
+</blockquote>
+<p>有了上面的配置，Hexo 在 public 目录下生成 html 文件时，会把文章对应的目录下的图片等附件复制过去。</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508093725129.png" class="" title="image-20240508093725129">
+
+<p>原理讲完，现在实际操作一下。</p>
+<p>先创建新文章</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new Kafka-如何保证消息消费的全局顺序性</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后编写文章，并把文章中的资源放在同名的目录下：</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508094820593.png" class="" title="image-20240508094820593">
+
+<p>根据插件 <code>hexo-asset-images</code> 的 README 内容，我们需要把文章中的图片路径改成跟图片名一致：</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508095315333.png" class="" title="image-20240508095315333">
+
+
+
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508095429116.png" class="" title="image-20240508095429116">
+
+
+
+<p>这个时候本地的文章是找不到图片路径的，所以不会显示。</p>
+<p>然后执行下面的命令在本地验证一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+
+
+<p>结果发现图片没有正常显示：</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508095657692.png" class="" title="image-20240508095657692">
+
+
+
+<p>按 <code>F12</code> 查看一下图片的路径</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;/image-20231127105610363.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;image-20231127105610363&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>可以看到，图片路径并没有转换成功。</p>
+<h2 id="如何解决？"><a href="#如何解决？" class="headerlink" title="如何解决？"></a>如何解决？</h2><p>根据网上的教程试了好久，最终在一处不起眼的评论区发现了解决办法。</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508101457710.png" class="" title="image-20240508101457710">
+
+
+
+<p>既然 <code>hexo-asset-images</code> 不管用，那就换一个插件，<strong>我们使用 <code>hexo-asset-img</code></strong></p>
+<p>首先卸载掉 <code>hexo-asset-images</code> （直接在 <code>node_modules</code> 目录下把插件的目录删除即可 ）</p>
+<p>然后安装新插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install hexo-asset-img --save</span><br></pre></td></tr></table></figure>
+
+
+
+<p>根据里面的 README 内容，把图片路径改成：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![image-20231127105610363](Kafka-如何保证消息消费的全局顺序性/image-20231127105610363.png)</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508101835082.png" class="" title="image-20240508101835082">
+
+
+
+<p>然后执行下面的命令在本地验证一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+
+
+<p>发现图片正常显示：</p>
+<img src="/2024/05/08/hexo-%E5%8D%9A%E5%AE%A2%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/image-20240508101927003.png" class="" title="image-20240508101927003">
+
+
+
+<p>图片路径转换成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=<span class="string">&quot;/2024/04/29/Kafka 如何保证消息消费的全局顺序性/image-20231127105610363.png&quot;</span> class=<span class="string">&quot;&quot;</span> title=<span class="string">&quot;image-20231127105610363&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我们从 README 里面还了解到：<strong>大概是从 <code>Hexo 5</code> 开始， <code>hexo-asset-image</code> 已经失效, 并且此仓库已 <code>archived </code>。</strong></p>
+<p>这也就是一开始使用  <code>hexo-asset-image</code> 插件导致图片路径没能转换成功的原因</p>
+</div>
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/04/29/Kafka-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E6%B6%88%E8%B4%B9%E7%9A%84%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F%E6%80%A7/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">Kafka 如何保证消息消费的全局顺序性</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
