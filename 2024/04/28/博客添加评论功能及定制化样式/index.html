@@ -272,21 +272,12 @@
 <p>PS：下文的修改操作仅限于博客主题（Klise），不同主题的配置文件可能会不一样，不过大体思路都是差不多的，即修改 <code>scss | config | ejs</code> 文件。</p>
 </blockquote>
 <h2 id="Valine-评论系统"><a href="#Valine-评论系统" class="headerlink" title="Valine 评论系统"></a>Valine 评论系统</h2><p>搜了网上的教程，决定采用 <a target="_blank" rel="noopener" href="https://valine.js.org/">Valine </a>来实现博客评论功能。</p>
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085208682.png" class="" title="image-20240428085208682">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428085208682.png" alt="image-20240428085208682"></p>
 <p>因为 Valine 的存储是基于 <a target="_blank" rel="noopener" href="https://www.leancloud.cn/">LearnCloud</a> 的，所以我们要先注册一个 LeanCloud 账号。</p>
 <p>登录之后进入【控制台】点击【创建应用】</p>
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085716880.png" class="" title="image-20240428085716880">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428085716880.png" alt="image-20240428085716880"></p>
 <p>应用创建好以后，进入刚刚创建的应用，选择左下角的【设置】 &gt; 【应用凭证】，然后就能看到你的 <code>APP ID</code> 和 <code>APP Key</code> 了：</p>
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428085934208.png" class="" title="image-20240428085934208">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428085934208.png" alt="image-20240428085934208"></p>
 <p>进入到你的博客根目录，找到你对应主题的主配置文件 <code>_config.yml</code>，添加关于 Valine 的配置字段。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">comments:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span> <span class="comment"># 开启评论系统</span></span><br><span class="line">  <span class="built_in">type</span>: valine <span class="comment"># 采用哪种评论系统</span></span><br><span class="line">  button: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
@@ -308,12 +299,7 @@
 <p>我就在想是不是没有渲染出来，然后去到主题目录下的 <code>layout</code> 目录，发现了 <code>valine.ejs</code> 文件。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;博客根目录&gt;\Klise\layout\partials\_comments\valine.ejs</span><br></pre></td></tr></table></figure>
 
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428092859252.png" class="" title="image-20240428092859252">
-
-
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428092859252.png" alt="image-20240428092859252"></p>
 <p>打开一看发现里面居然没有内容，然后网上搜了下资料，把相关内容复制粘贴了进去。</p>
 <p>结果发现还是不行，是不是没有去调用这个 ejs 文件？</p>
 <p>打开 <code>&lt;博客根目录&gt;\Klise\layout\partials\_comments\index.ejs</code> 文件查看验证一下，果然如此。</p>
@@ -323,16 +309,10 @@
 
 <p>因为我们用的是 Valine，所以把 <code>partials/_comments/waline</code> 改成 <code>partials/_comments/valine</code> 即可。</p>
 <p>再试一下，成功了！</p>
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428093727334.png" class="" title="image-20240428093727334">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428093727334.png" alt="image-20240428093727334"></p>
 <h2 id="样式定制化"><a href="#样式定制化" class="headerlink" title="样式定制化"></a>样式定制化</h2><p>正文默认的行间距我不是很满意，所以打算改一下，打开我们的博客网页然后点击 <code>F12</code> 查看网页元素。</p>
 <p>发现正文内容的样式字段在 <code>post</code> 类下的 <code>p</code> 标签中，而且在 <code>main.css</code> 文件里面。</p>
-<img src="/2024/04/28/%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%AE%9A%E5%88%B6%E5%8C%96%E6%A0%B7%E5%BC%8F/image-20240428095758739.png" class="" title="image-20240428095758739">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240428095758739.png" alt="image-20240428095758739"></p>
 <p>但是这个 <code>main.css</code> 是动态生成的，即 hexo 生成 public 目录的时候会去找 <code>主题\source</code> 目录下的 sass 文件然后生成 <code>main.css</code> 文件。</p>
 <p>所以我们想要修改样式，就必须找到标签样式对应的 sass 文件。</p>
 <p>我们找到主题目录下的 <code>main.scss</code> 文件，发现他还引用了其他的 sass 文件。</p>

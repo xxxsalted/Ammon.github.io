@@ -267,13 +267,9 @@
 
           <div class="page-content"><p>哈喽大家好，我是咸鱼。</p>
 <p>前段时间看到一个学弟写了篇用 Hexo 搭建博客的教程，心中沉寂已久的激情重新被点燃起来。（以前搞过一个个人网站，但是因为种种原因最后不了了之）</p>
-
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240426161141490.png" alt="image-20240426161141490"></p>
 <p>于是花了一天时间参考教程搭了个博客网站，我的博客网址是：<a href="https://xxxsalted.github.io/">https://xxxsalted.github.io/</a></p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240426212343889.png" class="" title="image-20240426212343889">
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240426212343889.png" alt="image-20240426212343889"></p>
 <p>下面是相关教程。</p>
 <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>俗话说：”工欲善其事必先利其器”，在搭建个人博客之前我们先要把环境准备好。</p>
 <ul>
@@ -286,10 +282,7 @@
 
 
 
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424091054613.png" class="" title="image-20240424091054613">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424091054613.png" alt="image-20240424091054613"></p>
 <ul>
 <li>Node.js 准备</li>
 </ul>
@@ -299,10 +292,7 @@
 <li>环境配置</li>
 </ul>
 <p>下载安装好 Git 和 Node.js 之后，我们在键盘上按下 <code>win+R</code> 键，输入 <code>cmd</code>。</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424091629558.png" class="" title="image-20240424091629558">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424091629558.png" alt="image-20240424091629558"></p>
 <p>然后在弹出的 cmd 窗口中输入下面的命令，来检验是否安装成功</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br><span class="line"></span><br><span class="line">npm version</span><br></pre></td></tr></table></figure>
 
@@ -334,47 +324,29 @@
 
 
 <p>然后右键鼠标，打开<code>Git Bash Here</code>，并依次输入以下命令：</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424092443228.png" class="" title="image-20240424092443228">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424092443228.png" alt="image-20240424092443228"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化 hexo</span></span><br><span class="line">hexo init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成网页文件</span></span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署到本地上</span></span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 
 
 
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424155016132.png" class="" title="image-20240424155016132">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424155016132.png" alt="image-20240424155016132"></p>
 <p>在执行命令的时候出现权限相关问题（<code>npm ERR! &#123; Error: EPERM: operation not permitted, mkdir &#39;C:\Program Files\nodejs\node_cache\_locks&#39;</code>），可以参考下面这篇文章来解决：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yinxiangzhenlihai/p/15936518.html">https://www.cnblogs.com/yinxiangzhenlihai/p/15936518.html</a></p>
 <p>然后你会发现你的目录下面多了很多文件：</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424143956657.png" class="" title="image-20240424143956657">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424143956657.png" alt="image-20240424143956657"></p>
 <p>接着打开下面网址验证一下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:4000/</span><br></pre></td></tr></table></figure>
 
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424154951369.png" class="" title="image-20240424154951369">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424154951369.png" alt="image-20240424154951369"></p>
 <p>如果你想停止运行，可以在上面的 bash 命令窗口中执行 <code>Ctrl+C</code> 命令。</p>
 <p>到现在我们的个人博客就完成了一半了！</p>
 <h2 id="托管至-GitHub"><a href="#托管至-GitHub" class="headerlink" title="托管至 GitHub"></a>托管至 GitHub</h2><ul>
 <li>仓库创建</li>
 </ul>
 <p>我们登录自己的 Github ，然后在 Github 中新建一个仓库。</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424093519086.png" class="" title="image-20240424093519086">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424093519086.png" alt="image-20240424093519086"></p>
 <p><strong>注意</strong>: <code>Repository name</code>一定要按照图片上的格式填写，其他的默认即可。</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424093601949.png" class="" title="image-20240424093601949">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424093601949.png" alt="image-20240424093601949"></p>
 <ul>
 <li>设置免密登录</li>
 </ul>
@@ -401,21 +373,11 @@
 
 <p>然后连续敲 3 次回车，最终会生成一个文件在“用户”目录下，打开 “用户” 目录（<code>C:\用户\用户名.ssh</code>）并找到<code>id_rsa.p ub</code>文件。</p>
 <p>用“记事本”打开并复制里面的内容，在  Github 主页的右上角进入 <code>Setting</code> -&gt; 左侧菜单栏 “<code>SSH and GPG keys</code>” -&gt; <code>New SSH Key</code> -&gt; 填写你获得的 <code>SSH Key</code>。</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424094409595.png" class="" title="image-20240424094409595">
-
-
-
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424094435711.png" class="" title="image-20240424094435711">
-
-
-
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424094523632.png" class="" title="image-20240424094523632">
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424094409595.png" alt="image-20240424094409595"></p>
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424094435711.png" alt="image-20240424094435711"></p>
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424094523632.png" alt="image-20240424094523632"></p>
 <h2 id="部署博客"><a href="#部署博客" class="headerlink" title="部署博客"></a>部署博客</h2><p>到了这一步，我们就可以正式地把博客部署到 Git 上了，进入我们前面创建的博客文件夹，然后找到配置文件 <code>_config.yml</code>。</p>
-<img src="/2024/04/28/%E5%8F%88%E9%87%8D%E6%96%B0%E6%90%AD%E4%BA%86%E4%B8%AA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20240424112352199.png" class="" title="image-20240424112352199">
-
-
-
+<p><img src="https://raw.githubusercontent.com/xxxsalted/images/main/hexo/image-20240424112352199.png" alt="image-20240424112352199"></p>
 <p>下面是我的配置文件的部分内容，大家可以参考一下</p>
 <p>部署路径部分：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: 你的 git 仓库地址</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
