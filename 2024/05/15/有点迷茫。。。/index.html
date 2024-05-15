@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>有点迷茫。。。 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" class="tag"># 随便写写</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">有点迷茫。。。</h1>
+          <div class="post-meta">
+            <time>5月 15, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼</p>
+<p>最近发觉自己的节奏有点乱了，感到一阵迷茫</p>
+<p>咸鱼毕业出来工作也有一年了，刚开始接触工作的时候，有许多工作上的东西能够让我去学习，无论是技术方面还是业务方面都进步很快</p>
+<p>随着对手头的工作内容逐渐熟练起来，感觉进步的曲线开始逐渐平缓</p>
+<p>即使偶尔逼自己看一些书籍或学习一门技术来提升自己，但是过一段时间之后可能就偃旗息鼓开始放弃了（例如之前热情高涨地要学 FLask ，买了书学了三分之一之后就再也没打开过了QAQ）</p>
+<p>如果不利用工作之外的时间去提升自己，让自己继续成长的话（无论是技术方面还是非技术方面），即使刚开始工作的时候觉得自己领先了很多人，但只要把时间线一拉长，可能个人的积累就远远不如那些一直在成长的人</p>
+<p>如果不能够保持自己的成长曲线，几年之后和别人的差距就会拉开</p>
+<p>在意识到了这一点时候，我开始有意地调整自己，试图找到提升自己的节奏，但是在这个过程中，我发现了一些问题</p>
+<p>首先就是觉得<strong>要学的东西太多太多了，我们究竟该如何找准方向，以及要学到什么程度才行？</strong></p>
+<p>就拿 IT 行业举例好了，五花八门的方向（测试、前端、后端、算法、安全……），眼花缭乱的编程语言（JavaScript、C++、Python、Java、Go、Rust…..）</p>
+<p>或者哪怕我们只学习计算机的基础学科，都可以无限深挖下去（操作系统底层原理、计算机网络、数据库、算法和数据结构…….）</p>
+<p><strong>我们学习的速度，既赶不上知识过时的速度，也追不上知识更新迭代的速度</strong></p>
+<p>其次就是<strong>在学习一门技术的过程中，发现自己并不享受这个过程，要不要及时止损换个方向？</strong></p>
+<p>比如说，数据结构和算法一直是我解不开的心结，在大一的时候我被 c++ 这座大山压得喘不过气来，导致我对接下来学校的相关课程都很抵触（尤其是数据结构和算法）</p>
+<p>后面找工作的时候发现一些企业在面试的时候会问你数据结构和算法相关的知识（手撕算法），于是抱着头悬梁锥刺股的决心强忍着恶心开始学习数据结构和刷力扣题</p>
+<p>但是没过多久我就坚持不下去了，后面出来工作之后，脑子一热又有了刷力扣题的想法，果不其然，没刷几道就又开始犯恶心了，是真的写不下去</p>
+<p>对于上面的情况，我相信有小伙伴也遇到过</p>
+<ul>
+<li><p>学会规划</p>
+</li>
+<li><p>找到驱动力</p>
+</li>
+</ul>
+<p><strong>在学习一门技术的时候如果没兴趣或者感到不适，我的建议是放弃，转去学习其他的，除非你发自内心地享受这一过程（或者你的工作、你正在做的东西需要你这么做）</strong></p>
+<p>所以如果你的学习目标是：掌握 TCP 和 UDP 协议的相关知识，那你恐怕很难坚持下去</p>
+<p>总结下来，执行层面最关键的就是长期稳定的进步。我们既需要做好时间规划让我们真正开始执行，取得进步，我们需要驱动力让我们做到长期坚持。</p>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/05/15/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AE%97%E6%B3%95%E4%BA%BA%E7%94%9F/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">贝叶斯算法人生</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/05/15/%E8%84%86%E5%BC%B1%E6%80%A7-%E9%B2%81%E6%A3%92%E6%80%A7-%E5%8F%8D%E8%84%86%E5%BC%B1%E6%80%A7/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">脆弱性-鲁棒性-反脆弱性</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

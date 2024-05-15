@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脆弱性-鲁棒性-反脆弱性 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" class="tag"># 随便写写</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">脆弱性-鲁棒性-反脆弱性</h1>
+          <div class="post-meta">
+            <time>5月 15, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼</p>
+<p>在开始本篇文章之前，我想先问小伙伴们一个问题：</p>
+<blockquote>
+<p>每个人都渴望稳定且有序的生活，但如果一个人的生活过于稳定有秩序且可预测，会有什么不好的影响吗？</p>
+<p>如果你每天做同样的事情，都按照同样的方式来度过，一旦出现不可预测的变故，你有应对的策略吗？</p>
+</blockquote>
+<p>在《贝叶斯算法人生》中，我说过这个世界是充满不确定的（上帝掷骰子）</p>
+<p>在一个快速变化且充满不确定性的世界里，一个人的生活过于稳定和循规蹈矩，那他&#x2F;她可能会变得很脆弱</p>
+<p>因为他&#x2F;她可能还没有做好准备去应对突如其来的变化（黑天鹅事件）</p>
+<blockquote>
+<p>1.只有固定的收入，一旦遭遇裁员或者家里发生重大变故需要一大笔钱就会导致个人经济陷入困境</p>
+<p>2.仅仅掌握一项技能（知识），一旦遭遇裁员就会导致个人职业遭受危机或者遇到新的挑战自己却无能为力</p>
+</blockquote>
+<ul>
+<li>问：</li>
+</ul>
+<p><strong>那我们该如何在充满不确定且快速变化的世界里去适应、生存呢？我们该如何应对未来的不确定性？</strong></p>
+<ul>
+<li>答：</li>
+</ul>
+<p><strong>个人在日常生活、工作或学习中尽量减少脆弱性并提高自己的反脆弱性。在遇到挑战或者压力时，不但要能够应对，还要试图从中学习和成长，让自己变得更强，以此来更好地应对未来的不确定性和变化</strong></p>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p>我们先来了解下什么是”脆弱性-鲁棒性-反脆弱“（Fragility-Robustness-Antifragility）</p>
+<ul>
+<li><strong>脆弱性（Fragility）</strong></li>
+</ul>
+<p>指的是系统、组织或个体在面对压力、变化或外部冲击时容易往往缺乏适应能力，一旦面对压力或冲击，容易出现故障、瘫痪或崩溃</p>
+<p>例如一个人的免疫系统脆弱，他们可能更容易受到疾病的侵袭，并且可能需要更长时间来康复</p>
+<ul>
+<li><strong>鲁棒性（Robustness）：</strong></li>
+</ul>
+<p>指系统、组织或个体面对压力、变化或外部冲击时能够保持正常稳定运行或快速恢复的能力</p>
+<p>例如鲁棒的人在面对挑战或者不确定时能够保持稳定，应对困难</p>
+<ul>
+<li><strong>反脆弱性（Antifragility）：</strong></li>
+</ul>
+<p>反脆弱性是由著名学者纳西姆·尼古拉斯·塔勒布（Nassim Nicholas Taleb）提出的概念</p>
+<p>指的是系统、组织或个体在面对压力、变化或外部冲击时能够从中受益、逐渐变得更强大的能力</p>
+<p>例如反脆弱的免疫系统不仅仅是能够抵抗疾病，而且在受到挑战时能够变得更强大。当一个人接触到某种病原体时，免疫系统会学习并适应，产生抗体和免疫记忆</p>
+<p>这种经验使得免疫系统在面对同一病原体再次出现时能够更快速、更有效地应对，甚至可以对其他类似病原体具有更强的应对能力</p>
+<p>简单来说，如果把这三种特性体现在人的身上的话则是：</p>
+<ul>
+<li>脆弱的人在面对压力和变化时容易受损</li>
+<li>鲁棒的人在面对压力和变化时能够保持稳定或快速恢复</li>
+<li>反脆弱的人在面对压力和变化时不但能够保持稳定，还能从中收益，以此来变得更强</li>
+</ul>
+<h2 id="为什么要提高反脆弱性"><a href="#为什么要提高反脆弱性" class="headerlink" title="为什么要提高反脆弱性"></a>为什么要提高反脆弱性</h2><p>这个世界是充满不确定性的，如果一个脆弱的人过得非常有秩序且稳定，一旦他的生活方式或生活环境发生了改变，那么可能会导致这个人往往不能够适应甚至受到伤害</p>
+<p>从心理方面来看，一个心理脆弱的人一旦受到某些打击（职场受挫、感情受挫等），会出现情绪不稳定、焦虑、抑郁、自卑等问题</p>
+<p>从身体方面来看，一个身体脆弱的人一旦外部病毒的入侵或内部功能的紊乱时，就会导致免疫系统、器官出现各种问题</p>
+<p>从经济方面来看，一个经济脆弱的人一旦陷入财务困境、缺乏收入来源和不稳定的就业状况就会受到贫困、失业和金融危机的影响</p>
+<p>从社会关系来看，一个社会关系脆弱的人更容易缺乏自信、社交回避、沮丧或社交焦虑，使得难以建立和维持健康、互利的社会关系</p>
+<p>由上面我们可以得知：<strong>脆弱性对人的伤害是一个多方面的问题，它可能导致身体健康问题、心理疾病、社交隔离和不稳定的经济状况，影响个人的整体和生活质量</strong></p>
+<p>所以我们需要减少脆弱性，提高鲁棒性。但是还是远远不够的</p>
+<p><strong>提高鲁棒性只能让你在面对压力或者挑战时保持稳定，你还需要提高反脆弱性来试图从压力、挫折和挑战中学习和成长</strong></p>
+<h2 id="如何提高"><a href="#如何提高" class="headerlink" title="如何提高"></a>如何提高</h2><p>我们该如何提高反脆弱性</p>
+<p><strong>增强学习和适应能力：</strong></p>
+<p>保持好奇心和学习的心态，积极主动地获取新的知识和技能。不断提升自己的适应能力，以适应不同的环境和情况</p>
+<p>比如说不桎梏于一个领域内的知识技能，主动学习新的技术，以适应变化，并将其视为提升自己的机会</p>
+<p><strong>从失败中学习：</strong></p>
+<p>将失败视为学习的机会，从中汲取教训和经验。不害怕失败，从失败中寻找改进和成长的机会。</p>
+<p>反脆弱的人能够从失败中迅速恢复并采取行动，以更好地适应未来的挑战</p>
+<p><strong>保持身心健康：</strong></p>
+<p>注重身心健康的维护，包括良好的睡眠、健康的饮食、适度的锻炼和心理压力管理。身心健康的状态有助于增强适应能力和应对挑战的能力</p>
+<p><strong>培养创造力和创新思维：</strong></p>
+<p>鼓励自己尝试新事物、提出新的想法和解决问题的方法。培养创造力和创新思维的能力，以适应不断变化的环境和寻找新的机会</p>
+<p><strong>保持多元化：</strong></p>
+<p>不要把鸡蛋放在同一个篮子里。不仅限于特定领域或技能，尝试学习和发展多种技能和知识</p>
+<p>比如说将投资分散到不同的资产类别（如股票、债券、房地产、大宗商品等）以及不同的行业和地区，以此来降低投资组合的整体风险并提高整体回报</p>
+<p>上面这些都是提高反脆弱性的一些方法论，但是每个人都是独立的个体，所以最重要的是找到适合自己的方式</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>我们生活的世界是充满变化和不确定性的，而一个过于有序和预测性的生活可能无法很好地适应这些变化和不确定性</p>
+<p>我们应该在追求秩序和稳定的同时，也要接受和适应一定的不确定和变化</p>
+<p>尝试各种不同的事情，去不同的地方，接触不同的人，多去探索和试错可以有助于我们增强鲁棒性和反脆弱性</p>
+<p>总结一下就是：</p>
+<p><strong>我们应该在追求确定性和保持不确定性之间寻找一个平衡</strong></p>
+<p><strong>既需要一定的确定性来保持我们的生活有序和稳定，也需要一定的不确定性来增强我们的鲁棒性和反脆弱性</strong></p>
+<p>最后以尼采说过的一句话来结束今天的文章吧</p>
+<p><strong>”What Doesn’t Kill You Makes You Stronger“</strong></p>
+</div>
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/2024/05/15/%E6%9C%89%E7%82%B9%E8%BF%B7%E8%8C%AB%E3%80%82%E3%80%82%E3%80%82/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">有点迷茫。。。</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/05/15/2022-%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">2022 年度总结</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>

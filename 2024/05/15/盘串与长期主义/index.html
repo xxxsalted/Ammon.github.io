@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>盘串与长期主义 [ 咸鱼运维杂谈 ]</title>
+
+  <link rel="icon" href="/img/favicon.ico">
+
+
+    <meta name="author" content="Ammon">
+
+
+
+    <meta name="Description" content="404NotFound">
+
+
+
+  <link rel="alternate" href="/atom.xml " title="咸鱼运维杂谈" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/css/main.css">
+  
+
+</head>
+  <body data-theme="light" class="notransition">
+    <script>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/"> Home</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/about/"> About</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/archives/"> Archives</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/tags/"> Tags</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+<div class="wrapper post">
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/tags/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" class="tag"># 随便写写</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">盘串与长期主义</h1>
+          <div class="post-meta">
+            <time>5月 15, 2024</time>
+            <span itemprop="author">
+              <span itemprop="name">Ammon</span>
+            </span>
+          </div>
+        </header>
+
+          <div class="page-content"><p>哈喽大家好，我是咸鱼</p>
+<p>大家可能不知道，咸鱼有一个爱好——盘串</p>
+<p>一年前，咸鱼毕业回家待了一段时间。偶尔间发现了以前去西藏带回来的菩提手串，当时右手缺点东西戴，便想着戴手上盘玩盘玩</p>
+<p>这是当时拍的照片：</p>
+<style>.ibkpxhfxvtpq{zoom:25%;}</style>
+
+
+
+<p>现在将近一年了，真正盘的时间应该是大半年左右，这是现在的样子</p>
+<p>光泽度还是挺不错的，现在手感比之前温润多了</p>
+<img src="/2024/05/15/%E7%9B%98%E4%B8%B2%E4%B8%8E%E9%95%BF%E6%9C%9F%E4%B8%BB%E4%B9%89/image-20230511225431037.png" class="" title="image-20230511225431037">
+
+
+
+<p>看到这里小伙伴可能有疑惑——<strong>盘串能跟长期主义有什么关系？</strong></p>
+<p>今天这篇文章则是关于我在盘串时的一些思考，我觉得<strong>跟我理解中的长期主义奉行的准则有相似的地方</strong>，于是便写出来分享给大家</p>
+<p>耐心</p>
+<p>盘串盘串，重点在于“盘”字</p>
+<p>这里说的盘是动词，指的是不断摩挲器物的动作。<strong>套用网上的解释</strong>：盘为承水器，以匜沃水，以盘承之，古者晨必洒手，日日皆然，引申为日日新</p>
+<p>所以，“盘”用在这个动作上，指人与器物的不断交流，达到日日为新的状态</p>
+<blockquote>
+<p>这个日日为新的状态，有两方面含义：一是器物经过盘玩，每天发生变化，日日为新；二是随着盘玩者对器物的了解逐渐深入，情感和心态日日为新</p>
+</blockquote>
+<p>盘串主要玩的就是一个“盘玩”的过程：从一个白串黄茬，慢慢地一点一点的初步上色，再到尴尬期，最后经过时间的洗礼将其盘红，达到一个具有胶质感的包浆状态</p>
+<p>而这个过程以及最后在串上面显现出来的岁月痕迹（磨损、包浆），让喜欢它的人深陷其中无法自拔</p>
+<p>但这可不是一件简单的事情，它需要长期的盘玩，数年的积累才有可能达到你心目中的效果</p>
+<p>也就是说，<strong>盘串需要你把时间线拉长，耐心地日复一日地盘玩摩挲</strong></p>
+<p>一个长期主义者亦是如此，<strong>没有耐心做支撑，长期主义就是一场空谈</strong></p>
+<p>当下社会飞速发展，生活节奏越来越快，<strong>“缺乏耐心”好像成了现代人的通病：期望得到快速的回报，难以在一件需要持之以恒的事情上投入精力</strong></p>
+<ul>
+<li>幻想”一夜暴富”，恨不得手里的资产明天就翻个倍；热衷投机，追涨杀跌</li>
+<li>对于《三天教你学会XXX》《十天速成XXX》这种文章爱不释手，妄想看了这些就能完全掌握某个知识，而不是借这些文章去提起自己的兴趣然后系统性地学习</li>
+<li>容易被某些别有用心的人（媒体）贩卖焦虑，自己的情绪被玩弄于股掌之中</li>
+</ul>
+<p>但是我们需要知道，<strong>唯有耐心才能够帮助我们抵御诱惑分散焦虑，并成就我们的长期价值</strong></p>
+<p>曾经有记者问股神巴菲特：“很多人都想变得有钱，但为什么90%的人最终却做不到？”</p>
+<p>巴菲特对此这样解释：“因为没有人愿意慢慢地变富”</p>
+<p>许多人羡慕巴菲特的投资成功，却并没有像他那样如此耐心地持有资产，巴菲特95%以上的财富，都是在他60岁以后获得的</p>
+<blockquote>
+<p> 张磊在《价值》中写道：”流水不争先，争的是滔滔不绝“</p>
+<p> 卡尔·维诺在《巴黎隐士》里所写：“我对任何唾手可得、快速、出自本能、即兴、含混的事物没有信心。我相信缓慢、平和、细水流长的力量，踏实，冷静。”</p>
+</blockquote>
+<p><strong>无论是盘串也好学习也罢，还是说投资，我们都应该做长期主义的拥护者，保持耐心。让珠子包浆、让知识累积、让资产增值</strong></p>
+<p>延迟满足</p>
+<p>前面我们说到，盘串需要耐心地日复一日地去盘玩，才有可能达到我们想要的包浆上色</p>
+<p>在这个过程中珠子会出现反碱、色差等情况（尴尬期），这是正常现象，经过一段时间的盘玩之后尴尬期就会消失</p>
+<p>但是有些人为了让串更快地达到最终效果，妄想短时间内就达到需要数年甚至数十年才能形成的包浆上色，采取了各种捷径——机刷、泡药水、上科技……</p>
+<p>我对这些做法不置可否，毕竟谁不想让自己的珠子立马就能够包浆上色呢？</p>
+<p>追求”即时满足“是人的本能，而”延迟满足“则需要我们违抗自己的本能</p>
+<p>但是我觉得盘串玩家需要<strong>学会延迟满足</strong>，长期主义者亦是如此</p>
+<p>“延迟满足”概念来自于沃尔特·米歇尔从 1960 年开始的一项名为“棉花糖实验”的儿童心理研究</p>
+<p>米歇尔指出：</p>
+<ul>
+<li>”即时满足“是我们人类的本能。人类的祖先不喜欢被猛兽吃掉，有食物要尽快吃，有水就抓紧喝。即使现在没有老虎吃我们了，也依然心怀恐惧，害怕失去，并渴望立即获得想要的东西</li>
+<li>“延迟满足”则需要我们违抗自己的本能，调动大脑中最为复杂的“冷静系统”对当前的冲动进行理性的反思与规划，而这也正是自控力的根本来源</li>
+</ul>
+<p>那么，既然是一个违背本能的操作，我们为什么要学会延迟满足？延迟满足能够给我们带来什么？</p>
+<p>回想一下，我们有多少次下定决心减肥健身、存钱理财、提高自己，却又总是败在了美食、消费主义、和无限制的娱乐面前</p>
+<p><strong>学会延迟满足，能够帮助我们冷却冲动，克制自身的欲望，抵御眼前的诱惑</strong></p>
+<p>从投资角度来看，我们受制于即时满足，希望股票买了就涨，卖了就跌，太急于求成。我们热衷于短线交易，低估长远回报</p>
+<p>字节跳动的张一鸣在面对采访时曾这样描述过：“如果一件事情你觉得很好，不妨再往后延迟一下，这会让你提高标准，同时留了缓冲。“</p>
+<p>高瓴资本创始人张磊，在他的《价值》一书中，多次提及一个观念：”在多数人都醉心于即时满足的世界里，懂得延迟满足道理的人已经先胜一筹了。“</p>
+<p><strong>学会延迟满足，不仅仅是抵御诱惑，更是磨练心性：一个延迟满足的人，不再过于注重眼前的利益得失，而是追求长期的价值</strong></p>
+<p>总结</p>
+<p><strong>生活中，许多的美好，都不能一蹴而就，需要一个漫长且忍耐的过程</strong></p>
+<p>保持耐心，学会延迟满足，做时间的朋友</p>
+<p>我们日复一日地摩挲着手上的器件，忍耐无法避免的尴尬期，违背人性的本能。即便如此，我相信一定会在历经晦暗苦涩后，品尝到最后包浆上色所带来的芬芳甘甜</p>
+</div>
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/2024/05/15/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AE%97%E6%B3%95%E4%BA%BA%E7%94%9F/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">贝叶斯算法人生</span>
+    </a>
+    
+  </nav>
+          <div class="dis">
+    
+     
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: '' == 'true',
+            verify: '' == 'true',
+            appId: "BtErEBHVfpv2sxm8KWPywL1j-gzGzoHsz",
+            appKey: "pmLLxXJE5OT872Kb8HMizMtj",
+            avatar: "/img/redcat.jpg",
+            placeholder: "说点什么吧！",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+		console.log("Valine done!")
+		 
+    </script>
+    <!-- Valine Comments end -->
+
+  </div>
+   </main>
+</div>
+
+  <footer class="footer">
+    <small class="footer_copyright">
+      <div id="bottom-inner">
+        Site by Ammon using
+        <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a>.
+        <br>
+        <p> Theme is <a target="_blank" rel="noopener" href="https://github.com/dewjohn/hexo-theme-klise">Klise</a></p>
+      </div>
+    </small>
+  </footer>
+  
+  
+
+    
+      <script src="/js/main.js"></script>
+    
+  
+  <script>
+    window.FPConfig = {
+      delay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      hoverDelay: 50,
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+</body>
+</html>
